@@ -13,5 +13,6 @@ public:
 	virtual void Initialize(void);
 	virtual void Update(void);
 	INFO* GetInfo() { return &m_Info; }
+	virtual void SetPos(float _fx, float _fy);
 };
 

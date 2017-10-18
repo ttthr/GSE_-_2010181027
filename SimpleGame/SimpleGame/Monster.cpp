@@ -18,14 +18,13 @@ void CMonster::Initialize(void)
 	m_Info.m_FCX = 30;
 	m_Info.m_FCY = 30;
 
-	m_fSpeed = 0.7f;
+	m_fSpeed = 0.1f;
 }
 
 void CMonster::Update(void)
 {
 	
-	if (m_Info.m_fx <= 250 )
-	{
-		m_Info.m_fx += m_fSpeed;
-	}
+	if ( m_Info.m_fx <= 250)
+		m_Info.m_fx *= -1;
+	
 }

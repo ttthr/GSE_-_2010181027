@@ -26,3 +26,9 @@ void CGameObject::Update(void)
 {
 
 }
+
+void CGameObject::SetPos(float _fx, float _fy)
+{
+	m_Info.m_fx = _fx;
+	m_Info.m_fy = _fy;
+}
