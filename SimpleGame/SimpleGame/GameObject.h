@@ -9,10 +9,16 @@ public:
 	virtual ~CGameObject();
 protected:
 	INFO  m_Info;
+	float m_xDir;
+	float m_yDir;
+	float m_fspeed;
 public:
 	virtual void Initialize(void);
 	virtual void Update(void);
-	INFO* GetInfo() { return &m_Info; }
+	INFO GetInfo() { return m_Info; }
+	virtual void SetInfo(INFO _Info);
+	virtual void SetColor(float r, float g, float b, float a);
 	virtual void SetPos(float _fx, float _fy);
+	virtual void SetDir(float _xDir, float _yDir);
 };
 

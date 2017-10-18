@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
+#include "Monster.h"
 
 class CSceneManager
 {
@@ -7,16 +9,16 @@ class CSceneManager
 public:
 	CSceneManager();
 	~CSceneManager();
-protected:
-	INFO  m_Info;
-public:
-	virtual void Initialize(void);
-	virtual void Update(void);
-	INFO* GetInfo() { return &m_Info; }
-	virtual void SetPos(float _fx, float _fy);
-public:
+private:
 	list<CGameObject*> m_pGameObject;
-
+public:
+	list<CGameObject*>* GetgameObject() { return &m_pGameObject; }
+	void AddgameObject(INFO _Info);
+	void AddgamePlayerObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
+	void AddMonstergameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
+	void UpdateMonsterObject();
+	void UpdatePlayerObject();
+	void ReleaseObject();
 };
 
 

@@ -13,10 +13,22 @@ using namespace std;
 #include <list>
 #include <algorithm>
 
-struct INFO
+//struct INFO
+//{
+//	float m_fx;
+//	float m_fy;
+//	float m_FCX;
+//	float m_FCY;
+//};
+
+typedef struct INFO
 {
-	float m_fx;
-	float m_fy;
-	float m_FCX;
-	float m_FCY;
-};
+	float x;
+	float y;
+	float z;
+	float size;
+	float r;
+	float g;
+	float b;
+	float a;
+}INFO;

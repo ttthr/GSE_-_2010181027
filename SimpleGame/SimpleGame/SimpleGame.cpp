@@ -22,29 +22,49 @@ Renderer *g_Renderer = NULL;
 CPlayer*      m_pPlayer = NULL;
 CMonster*     m_pMonster = NULL ;
 CSceneManager* m_pSceneManager = NULL;
-list<CGameObject*> m_pGameObject;
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+
+
 	// Renderer Test
-	g_Renderer->DrawSolidRect(0, 0, 0, 20, 1, 0, 1, 1);
+	//g_Renderer->DrawSolidRect(0, 0, 0, 20, 1, 0, 1, 1);
 
-	g_Renderer->DrawSolidRect(m_pPlayer->GetInfo()->m_fx, m_pPlayer->GetInfo()->m_fy, 0, 40, 1, 0, 0, 1);
-	m_pPlayer->Update();
 
-	list<CGameObject*>::iterator iter = m_pGameObject.begin();
-	list<CGameObject*>::iterator iter_end = m_pGameObject.end();
+	list<CGameObject*>* listGameObject = m_pSceneManager->GetgameObject();
 
-	for (iter; iter != iter_end; ++iter)
+
+	list<CGameObject*>::iterator iter_player = listGameObject->begin();
+	list<CGameObject*>::iterator iter_playerend = listGameObject->end();
+
+	for (iter_player; iter_player != iter_playerend; ++iter_player)
 	{
-		g_Renderer->DrawSolidRect((*iter)->GetInfo()->m_fx, (*iter)->GetInfo()->m_fy, 0, 20, 1, 1, 1, 1);
-		(*iter)->Update();
+		INFO Info = ((CPlayer*)(*iter_player))->GetInfo();
+
+		g_Renderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+
+		((CPlayer*)(*iter_player))->Update();
+	
+
 	}
-	/*g_Renderer->DrawSolidRect(m_pMonster->GetInfo()->m_fx, m_pMonster->GetInfo()->m_fy, 0, 40, 0.3, 0.3, 0.3, 0.3);
-	m_pMonster->Update();*/
+
+	list<CGameObject*>::iterator iter_monster = listGameObject->begin();
+	list<CGameObject*>::iterator iter_monsterend = listGameObject->end(); 
+	
+		for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
+		{
+			INFO Info = ((CMonster*)(*iter_monster))->GetInfo();
+
+			g_Renderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+
+			((CMonster*)(*iter_monster))->Update();
+		}
+	
+
+
 	glutSwapBuffers();
 }
 
@@ -90,20 +110,22 @@ int main(int argc, char **argv)
 	// Initialize Renderer
 	g_Renderer = new Renderer(500, 500);
 
-	
+
 	m_pPlayer = new CPlayer();
 	m_pPlayer->Initialize();
+
+	m_pMonster = new CMonster();
+	m_pMonster->Initialize();
+
+	m_pSceneManager = new CSceneManager();
 	
+	m_pSceneManager->AddgamePlayerObject(m_pPlayer->GetInfo().x , m_pPlayer->GetInfo().y, m_pPlayer->GetInfo().z, m_pPlayer->GetInfo().size, 255, 0, 0, 255);
+
 	for (int i = 0; i < 50; ++i)
 	{
-		CGameObject* pMonster = new CMonster;
-		pMonster->Initialize();
-		pMonster->SetPos(static_cast<float>(rand() % 300)
-			, static_cast<float>(rand() % 300));
-
-		m_pGameObject.push_back(pMonster);
+		m_pSceneManager->AddMonstergameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), m_pMonster->GetInfo().z, m_pMonster->GetInfo().size, 255, 255, 255, 255);
 	}
-
+	
 
 
 	if (!g_Renderer->IsInitialized())

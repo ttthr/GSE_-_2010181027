@@ -13,18 +13,30 @@ CMonster::~CMonster()
 
 void CMonster::Initialize(void)
 {
-	m_Info.m_fx = 0;
-	m_Info.m_fy = 100;
-	m_Info.m_FCX = 30;
-	m_Info.m_FCY = 30;
+	m_Info.x = 100;
+	m_Info.y = 100;
+	m_Info.z = 0;
+	m_Info.size = 20;
 
-	m_fSpeed = 0.1f;
 }
 
 void CMonster::Update(void)
 {
-	
-	if ( m_Info.m_fx <= 250)
-		m_Info.m_fx *= -1;
+	float ElapsedTime = 0.1;
+
+
+	m_Info.x += m_fspeed * m_xDir * ElapsedTime;
+	m_Info.y += m_fspeed * m_yDir * ElapsedTime;
+
+	if (m_Info.x > 250)
+		m_xDir *= -1;
+	else if (m_Info.x <= -250)
+		m_xDir *= -1;
+
+
+	if (m_Info.y > 250)
+		m_yDir *= -1;
+	else if (m_Info.y <= -250)
+		m_yDir *= -1;
 	
 }
