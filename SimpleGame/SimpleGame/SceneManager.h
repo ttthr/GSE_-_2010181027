@@ -16,9 +16,11 @@ public:
 	void AddgameObject(INFO _Info);
 	void AddgamePlayerObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
 	void AddMonstergameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
-	void UpdateMonsterObject();
-	void UpdatePlayerObject();
 	void ReleaseObject();
+public: 
+	//충돌 함수
+ 	void CollisionObject();
+	bool CollsionCheck(float _x, float _y, float _xSize, float _ySize, float _x1, float _y1, float _x1Size, float y1Size);
 };
 
 

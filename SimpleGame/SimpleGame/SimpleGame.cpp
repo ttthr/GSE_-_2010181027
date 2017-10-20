@@ -18,17 +18,16 @@ but WITHOUT ANY WARRANTY.
 #include "Monster.h"
 #include "SceneManager.h"
 
-Renderer *g_Renderer = NULL;
-CPlayer*      m_pPlayer = NULL;
-CMonster*     m_pMonster = NULL ;
+Renderer*      g_Renderer = NULL;
+CPlayer*       m_pPlayer = NULL;
+CMonster*      m_pMonster = NULL ;
 CSceneManager* m_pSceneManager = NULL;
+bool b_LButtonDown = false;
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
-
-
 
 	// Renderer Test
 	//g_Renderer->DrawSolidRect(0, 0, 0, 20, 1, 0, 1, 1);
@@ -36,8 +35,8 @@ void RenderScene(void)
 
 	list<CGameObject*>* listGameObject = m_pSceneManager->GetgameObject();
 
-
-	list<CGameObject*>::iterator iter_player = listGameObject->begin();
+	//플레이어 생성
+	list<CGameObject*>::iterator iter_player    = listGameObject->begin();
 	list<CGameObject*>::iterator iter_playerend = listGameObject->end();
 
 	for (iter_player; iter_player != iter_playerend; ++iter_player)
@@ -46,12 +45,13 @@ void RenderScene(void)
 
 		g_Renderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
 
+		//플레이어 업데이트 위해 캐스팅
 		((CPlayer*)(*iter_player))->Update();
-	
-
+		
 	}
 
-	list<CGameObject*>::iterator iter_monster = listGameObject->begin();
+	//몬스터 생성
+	list<CGameObject*>::iterator iter_monster    = listGameObject->begin();
 	list<CGameObject*>::iterator iter_monsterend = listGameObject->end(); 
 	
 		for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
@@ -60,10 +60,14 @@ void RenderScene(void)
 
 			g_Renderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
 
-			((CMonster*)(*iter_monster))->Update();
-		}
-	
 
+			//몬스터 업데이트 위해 캐스팅
+			((CMonster*)(*iter_monster))->Update();
+	
+		}
+
+		// 씬 매니저에서 두 객체를 다 들고 있기 때문에 충돌함수 여기서 구현 후 업데이트에서 돌려주기
+		m_pSceneManager->CollisionObject();
 
 	glutSwapBuffers();
 }
@@ -75,6 +79,33 @@ void Idle(void)
 
 void MouseInput(int button, int state, int x, int y)
 {
+	// 클래시 로얄 처럼 카드를  누르고 드래그로 이동후 뗀 곳에 생성을 하기 위해
+	switch (button)
+	{
+	case GLUT_LEFT_BUTTON:
+
+		if (state == GLUT_DOWN)
+		{
+			b_LButtonDown = true;
+		}
+		if (state == GLUT_UP)
+		{
+			if (b_LButtonDown)
+			{
+
+				b_LButtonDown = false;
+				m_pSceneManager->AddMonstergameObject(float(x - 250), float(-(y - 250)), 0, 20, 255, 255, 255, 0);
+			}
+		}
+		break;
+
+
+	case GLUT_MIDDLE_BUTTON:
+		break;
+	case GLUT_RIGHT_BUTTON:
+		break;
+	}
+
 	RenderScene();
 }
 
@@ -111,22 +142,25 @@ int main(int argc, char **argv)
 	g_Renderer = new Renderer(500, 500);
 
 
+	// 플레이어 생성 및 Initialize
 	m_pPlayer = new CPlayer();
 	m_pPlayer->Initialize();
 
+	// 몬스터 생성 및 Initialize
 	m_pMonster = new CMonster();
 	m_pMonster->Initialize();
 
+	// 씬매니저로 객체 생성 관리 list사용
 	m_pSceneManager = new CSceneManager();
 	
-	m_pSceneManager->AddgamePlayerObject(m_pPlayer->GetInfo().x , m_pPlayer->GetInfo().y, m_pPlayer->GetInfo().z, m_pPlayer->GetInfo().size, 255, 0, 0, 255);
+	// 씬 매니저 이용 PlayerObject 생성
+	m_pSceneManager->AddgamePlayerObject(m_pPlayer->GetInfo().x , m_pPlayer->GetInfo().y, m_pPlayer->GetInfo().z, m_pPlayer->GetInfo().size, 0, 0, 255, 255);
 
 	for (int i = 0; i < 50; ++i)
 	{
-		m_pSceneManager->AddMonstergameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), m_pMonster->GetInfo().z, m_pMonster->GetInfo().size, 255, 255, 255, 255);
+		// 씬 매니저 이용 MonstergameObject 50개 생성 ( for문 이용 )
+		m_pSceneManager->AddMonstergameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), m_pMonster->GetInfo().z, m_pMonster->GetInfo().size, 255, 255, 255, 0);
 	}
-	
-
 
 	if (!g_Renderer->IsInitialized())
 	{
@@ -142,7 +176,11 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	//객체 삭제
 	delete g_Renderer;
+	delete m_pSceneManager;
+	delete m_pPlayer;
+	delete m_pMonster;
 
     return 0;
 }
