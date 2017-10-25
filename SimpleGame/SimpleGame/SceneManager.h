@@ -18,7 +18,7 @@ public:
 	void AddgameObject(INFO _Info);
 	void AddgamePlayerObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
 	void AddMonstergameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
-	void ObjectUpdate();
+	void ObjectUpdate(float _ElapsedTime);
 	void ReleaseObject();
 public: 
 	//충돌 함수

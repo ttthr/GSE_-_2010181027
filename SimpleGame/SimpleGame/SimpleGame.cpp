@@ -23,17 +23,17 @@ CPlayer*       m_pPlayer = NULL;
 CMonster*      m_pMonster = NULL ;
 CSceneManager* m_pSceneManager = NULL;
 bool b_LButtonDown = false;
+DWORD d_StratTime = 0;
 
 void RenderScene(void)
 {
 
-	float CurrentTime, m_fStartTime, InitStartTime;
-
-	InitStartTime = (float)timeGetTime() * 0.001f;
-	m_fStartTime = InitStartTime;
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+
+	float ElapsedTime = (timeGetTime() - d_StratTime) / 10.f;
+	d_StratTime = timeGetTime();
+
 
 	// Renderer Test
 	//g_Renderer->DrawSolidRect(0, 0, 0, 20, 1, 0, 1, 1);
@@ -64,7 +64,7 @@ void RenderScene(void)
 
 	}
 	//씬 매니저 몬스터, 플레이어 업데이트
-	m_pSceneManager->ObjectUpdate();
+	m_pSceneManager->ObjectUpdate(ElapsedTime);
 
 	// 씬 매니저에서 두 객체를 다 들고 있기 때문에 충돌함수 여기서 구현 후 업데이트에서 돌려주기
 	m_pSceneManager->CollisionObject();
@@ -138,7 +138,8 @@ int main(int argc, char **argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
-
+	// 처음 시간
+	d_StratTime = timeGetTime();
 	// Initialize Renderer
 	//g_Renderer = new Renderer(500, 500);
 

@@ -14,7 +14,7 @@ protected:
 	float m_fspeed;
 public:
 	virtual void Initialize(void);
-	virtual void Update(void);
+	virtual void Update(float _ElapsedTime);
 	INFO GetInfo() { return m_Info; }
 	virtual void SetInfo(INFO _Info);
 	virtual void SetColor(float r, float g, float b, float a);

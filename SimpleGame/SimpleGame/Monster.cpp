@@ -23,14 +23,14 @@ void CMonster::Initialize(void)
 
 }
 
-void CMonster::Update(void)
+void CMonster::Update(float _ElapsedTime)
 {
 	//타임 매니저 같은 역할을 하기 위한 변수 
-	float ElapsedTime = 0.1;
+	//float ElapsedTime = 0.1;
 
 
-	m_Info.x += m_fspeed * m_xDir * ElapsedTime;
-	m_Info.y += m_fspeed * m_yDir * ElapsedTime;
+	m_Info.x += m_fspeed * m_xDir * _ElapsedTime;
+	m_Info.y += m_fspeed * m_yDir * _ElapsedTime;
 
 	if (m_Info.x > 250)
 		m_xDir *= -1;

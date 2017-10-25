@@ -75,7 +75,7 @@ void CSceneManager::AddMonstergameObject(float _x, float _y, float _z, float _si
 
 	
 }
-void CSceneManager::ObjectUpdate()
+void CSceneManager::ObjectUpdate(float _ElapsedTime)
 {
 
 
@@ -84,7 +84,7 @@ void CSceneManager::ObjectUpdate()
 
 	for (iter_player; iter_player != iter_playerend; ++iter_player)
 	{
-		((CPlayer*)(*iter_player))->Update();
+		((CPlayer*)(*iter_player))->Update(_ElapsedTime);
 	}
 
 	//몬스터 생성
@@ -93,7 +93,7 @@ void CSceneManager::ObjectUpdate()
 
 	for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
 	{
-		((CMonster*)(*iter_monster))->Update();
+		((CMonster*)(*iter_monster))->Update(_ElapsedTime);
 	}
 
 }

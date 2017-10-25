@@ -12,7 +12,7 @@ private:
 	float  m_fAttack;
 public:
 	virtual void Initialize(void);
-	virtual void Update(void);
+	virtual void Update(float _ElapsedTime);
 	float GetMonsterLife() { return m_fLife; }
 	void SetMonsterLife(float _fLife);
 

@@ -23,7 +23,7 @@ void CPlayer::Initialize(void)
 	m_fAttack = 10;
 }
 
-void CPlayer::Update(void)
+void CPlayer::Update(float _ElapsedTime)
 {
 
 	if (m_Info.x > 250)

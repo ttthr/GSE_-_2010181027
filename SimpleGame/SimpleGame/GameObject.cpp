@@ -27,7 +27,7 @@ void CGameObject::Initialize(void)
 
 }
 
-void CGameObject::Update(void)
+void CGameObject::Update(float _ElapsedTime)
 {
 	
 }
