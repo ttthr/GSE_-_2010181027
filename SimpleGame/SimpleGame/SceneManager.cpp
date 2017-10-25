@@ -4,13 +4,28 @@
 
 CSceneManager::CSceneManager()
 {
-	
+
+
+	m_pRenderer = new Renderer(500, 500);
+
+
+	if (!m_pRenderer->IsInitialized())
+	{
+		std::cout << "Renderer could not be initialized.. \n";
+	}
+
 }
 
 
 CSceneManager::~CSceneManager()
 {
 	ReleaseObject();
+	if (m_pRenderer)
+	{
+		delete m_pRenderer;
+		m_pRenderer = NULL;
+	}
+		
 }
 void CSceneManager::AddgameObject(INFO _Info)
 {
@@ -19,6 +34,9 @@ void CSceneManager::AddgameObject(INFO _Info)
 	pObject->SetInfo(_Info);
 
 	m_pGameObject.push_back(pObject);
+
+
+
 }
 void CSceneManager::AddgamePlayerObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a)
 {
@@ -27,6 +45,8 @@ void CSceneManager::AddgamePlayerObject(float _x, float _y, float _z, float _siz
 
 
 	m_pGameObject.push_back(pObject);
+
+
 
 }
 void CSceneManager::AddMonstergameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a)
@@ -52,7 +72,30 @@ void CSceneManager::AddMonstergameObject(float _x, float _y, float _z, float _si
 	pObject->SetDir(randx, randy);
 
 	m_pGameObject.push_back(pObject);
+
 	
+}
+void CSceneManager::ObjectUpdate()
+{
+
+
+	list<CGameObject*>::iterator iter_player = m_pGameObject.begin();
+	list<CGameObject*>::iterator iter_playerend = m_pGameObject.end();
+
+	for (iter_player; iter_player != iter_playerend; ++iter_player)
+	{
+		((CPlayer*)(*iter_player))->Update();
+	}
+
+	//몬스터 생성
+	list<CGameObject*>::iterator iter_monster = m_pGameObject.begin();
+	list<CGameObject*>::iterator iter_monsterend = m_pGameObject.end();
+
+	for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
+	{
+		((CMonster*)(*iter_monster))->Update();
+	}
+
 }
 void CSceneManager::ReleaseObject()
 {
@@ -89,11 +132,12 @@ void CSceneManager::CollisionObject()
 		{
 			//충돌하면 빨간색
 			((CMonster*)(*iterAnother))->SetColor(255, 0, 0, 255);
-
 		}
 		else
+		{
 			//아니면 흰색
 			((CMonster*)(*iterAnother))->SetColor(255, 255, 255, 255);
+		}
 	}
 
 }

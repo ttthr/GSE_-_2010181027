@@ -8,9 +8,14 @@ public:
 	virtual ~CPlayer();
 private:
 	float  m_fSpeed;
+	float  m_fLife;
+	float  m_fAttack;
 public:
 	virtual void Initialize(void);
 	virtual void Update(void);
+	float GetPlayerLife() { return m_fLife; }
+	void SetPlayerLife(float _fLife);
+	float GetAttack() { return m_fAttack; }
 
 };
 

@@ -18,6 +18,9 @@ void CPlayer::Initialize(void)
 	m_Info.y = 150;
 	m_Info.z = 0;
 	m_Info.size = 40;
+
+	m_fLife = 30000;
+	m_fAttack = 10;
 }
 
 void CPlayer::Update(void)
@@ -35,19 +38,24 @@ void CPlayer::Update(void)
 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
-		m_Info.x -= 0.05f;
+		m_Info.x -= 0.1f;
 	}
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		m_Info.x += 0.05f;
+		m_Info.x += 0.1f;
 	}
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
-		m_Info.y += 0.05f;
+		m_Info.y += 0.1f;
 	}
 	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
-		m_Info.y -= 0.05f;
+		m_Info.y -= 0.1f;
 	}
+}
+
+void CPlayer::SetPlayerLife(float _fLife)
+{
+	m_fLife -= m_fLife;
 }
 

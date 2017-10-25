@@ -28,6 +28,9 @@
     <Filter Include="소스 파일\SceneManager">
       <UniqueIdentifier>{7465cb68-dee7-443f-9f00-986e6b930777}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\GameTimer">
+      <UniqueIdentifier>{3b8a4011-1c04-48d6-b56a-8a319b8de7f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -54,6 +57,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>소스 파일\SceneManager</Filter>
     </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>소스 파일\GameTimer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -76,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>소스 파일\GameTimer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

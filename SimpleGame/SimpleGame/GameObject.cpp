@@ -6,7 +6,7 @@
 CGameObject::CGameObject()
 {
 
-	m_fspeed = 0.2;
+	m_fspeed = 0.5;
 	m_xDir = 1;
 	m_yDir = 1;
 

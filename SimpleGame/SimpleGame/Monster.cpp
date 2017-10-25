@@ -18,6 +18,9 @@ void CMonster::Initialize(void)
 	m_Info.z = 0;
 	m_Info.size = 20;
 
+	m_fLife = 30;
+	m_fAttack = 5;
+
 }
 
 void CMonster::Update(void)
@@ -42,3 +45,10 @@ void CMonster::Update(void)
 
 	
 }
+
+void CMonster::SetMonsterLife(float _fLife)
+{
+	m_fLife -= _fLife;
+}
+
+

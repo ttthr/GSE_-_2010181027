@@ -18,7 +18,7 @@ but WITHOUT ANY WARRANTY.
 #include "Monster.h"
 #include "SceneManager.h"
 
-Renderer*      g_Renderer = NULL;
+//Renderer*      g_Renderer = NULL;
 CPlayer*       m_pPlayer = NULL;
 CMonster*      m_pMonster = NULL ;
 CSceneManager* m_pSceneManager = NULL;
@@ -26,48 +26,48 @@ bool b_LButtonDown = false;
 
 void RenderScene(void)
 {
+
+	float CurrentTime, m_fStartTime, InitStartTime;
+
+	InitStartTime = (float)timeGetTime() * 0.001f;
+	m_fStartTime = InitStartTime;
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	// Renderer Test
 	//g_Renderer->DrawSolidRect(0, 0, 0, 20, 1, 0, 1, 1);
 
-
 	list<CGameObject*>* listGameObject = m_pSceneManager->GetgameObject();
 
 	//플레이어 생성
-	list<CGameObject*>::iterator iter_player    = listGameObject->begin();
+	list<CGameObject*>::iterator iter_player = listGameObject->begin();
 	list<CGameObject*>::iterator iter_playerend = listGameObject->end();
 
 	for (iter_player; iter_player != iter_playerend; ++iter_player)
 	{
 		INFO Info = ((CPlayer*)(*iter_player))->GetInfo();
 
-		g_Renderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+		m_pSceneManager->GetRenderer()->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
 
-		//플레이어 업데이트 위해 캐스팅
-		((CPlayer*)(*iter_player))->Update();
-		
 	}
 
 	//몬스터 생성
-	list<CGameObject*>::iterator iter_monster    = listGameObject->begin();
-	list<CGameObject*>::iterator iter_monsterend = listGameObject->end(); 
-	
-		for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
-		{
-			INFO Info = ((CMonster*)(*iter_monster))->GetInfo();
+	list<CGameObject*>::iterator iter_monster = listGameObject->begin();
+	list<CGameObject*>::iterator iter_monsterend = listGameObject->end();
 
-			g_Renderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+	for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
+	{
+		INFO Info = ((CMonster*)(*iter_monster))->GetInfo();
 
+		m_pSceneManager->GetRenderer()->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
 
-			//몬스터 업데이트 위해 캐스팅
-			((CMonster*)(*iter_monster))->Update();
-	
-		}
+	}
+	//씬 매니저 몬스터, 플레이어 업데이트
+	m_pSceneManager->ObjectUpdate();
 
-		// 씬 매니저에서 두 객체를 다 들고 있기 때문에 충돌함수 여기서 구현 후 업데이트에서 돌려주기
-		m_pSceneManager->CollisionObject();
+	// 씬 매니저에서 두 객체를 다 들고 있기 때문에 충돌함수 여기서 구현 후 업데이트에서 돌려주기
+	m_pSceneManager->CollisionObject();
 
 	glutSwapBuffers();
 }
@@ -138,8 +138,9 @@ int main(int argc, char **argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
+
 	// Initialize Renderer
-	g_Renderer = new Renderer(500, 500);
+	//g_Renderer = new Renderer(500, 500);
 
 
 	// 플레이어 생성 및 Initialize
@@ -162,10 +163,7 @@ int main(int argc, char **argv)
 		m_pSceneManager->AddMonstergameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), m_pMonster->GetInfo().z, m_pMonster->GetInfo().size, 255, 255, 255, 0);
 	}
 
-	if (!g_Renderer->IsInitialized())
-	{
-		std::cout << "Renderer could not be initialized.. \n";
-	}
+
 
 
 	glutDisplayFunc(RenderScene);
@@ -177,7 +175,6 @@ int main(int argc, char **argv)
 	glutMainLoop();
 
 	//객체 삭제
-	delete g_Renderer;
 	delete m_pSceneManager;
 	delete m_pPlayer;
 	delete m_pMonster;
