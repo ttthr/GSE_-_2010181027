@@ -31,6 +31,9 @@
     <Filter Include="소스 파일\GameTimer">
       <UniqueIdentifier>{3b8a4011-1c04-48d6-b56a-8a319b8de7f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\GameObject\Bullet">
+      <UniqueIdentifier>{ef8a601e-a1e2-405b-9c65-5645fe4ed3f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,6 +63,9 @@
     <ClInclude Include="GameTimer.h">
       <Filter>소스 파일\GameTimer</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>소스 파일\GameObject\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -85,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="GameTimer.cpp">
       <Filter>소스 파일\GameTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>소스 파일\GameObject\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

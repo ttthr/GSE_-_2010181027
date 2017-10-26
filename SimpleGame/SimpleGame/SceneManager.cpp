@@ -5,9 +5,7 @@
 CSceneManager::CSceneManager()
 {
 
-
 	m_pRenderer = new Renderer(500, 500);
-
 
 	if (!m_pRenderer->IsInitialized())
 	{
@@ -36,22 +34,10 @@ void CSceneManager::AddgameObject(INFO _Info)
 	m_pGameObject.push_back(pObject);
 
 
-
 }
-void CSceneManager::AddgamePlayerObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a)
+void CSceneManager::AddgameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a)
 {
-	CGameObject* pObject = new CPlayer();
-	pObject->SetInfo(INFO{ _x,  _y , _z, _size, _r, _g, _b, _a });
-
-
-	m_pGameObject.push_back(pObject);
-
-
-
-}
-void CSceneManager::AddMonstergameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a)
-{
-	CGameObject* pObject = new CMonster();
+	CGameObject* pObject = new CGameObject();
 	pObject->SetInfo(INFO{ _x,  _y , _z, _size, _r, _g, _b, _a });
 
 	// 몬스터들 자동으로 이동 
@@ -78,23 +64,24 @@ void CSceneManager::AddMonstergameObject(float _x, float _y, float _z, float _si
 void CSceneManager::ObjectUpdate(float _ElapsedTime)
 {
 
+	//오브젝트 업데이트
+	list<CGameObject*>::iterator iter    = m_pGameObject.begin();
+	list<CGameObject*>::iterator iter_end= m_pGameObject.end();
 
-	list<CGameObject*>::iterator iter_player = m_pGameObject.begin();
-	list<CGameObject*>::iterator iter_playerend = m_pGameObject.end();
-
-	for (iter_player; iter_player != iter_playerend; ++iter_player)
+	for (; iter != iter_end;)
 	{
-		((CPlayer*)(*iter_player))->Update(_ElapsedTime);
+		(*iter)->Update(_ElapsedTime);
+		(*iter)->DecreaseLife(1);
+
+		if ((*iter)->GetMonsterLifeTime() <= 0)
+		{
+			delete (*iter);
+			iter = m_pGameObject.erase(iter);
+		}
+		else
+			iter++;
 	}
 
-	//몬스터 생성
-	list<CGameObject*>::iterator iter_monster = m_pGameObject.begin();
-	list<CGameObject*>::iterator iter_monsterend = m_pGameObject.end();
-
-	for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
-	{
-		((CMonster*)(*iter_monster))->Update(_ElapsedTime);
-	}
 
 }
 void CSceneManager::ReleaseObject()
@@ -105,7 +92,6 @@ void CSceneManager::ReleaseObject()
 	for (iter; iter != iter_end; ++iter)
 	{
 		delete (*iter);
-
 		iter = m_pGameObject.erase(iter);
 	}
 
@@ -114,33 +100,49 @@ void CSceneManager::ReleaseObject()
 void CSceneManager::CollisionObject()
 {
 
-	//몬스터 객체
-	list<CGameObject*>::iterator iterAnother = m_pGameObject.begin();
-	list<CGameObject*>::iterator iterAnother_end = m_pGameObject.end();
+	
+	list<CGameObject*>::iterator iter = m_pGameObject.begin();
+	list<CGameObject*>::iterator iter_end = m_pGameObject.end();
 
-	auto iter_player = m_pGameObject.begin(); //플레이어
-	iterAnother++;
-
-	for (iterAnother; iterAnother != iterAnother_end; ++iterAnother)
+	for (iter; iter != iter_end;++iter)
 	{
+		bool bCollCheck = false;
 
-		//충돌할 두 객체정보를 받는다.
-		INFO Player = ((CPlayer*)(*iter_player))->GetInfo();
-		INFO Monster = ((CMonster*)(*iterAnother))->GetInfo();
+		list<CGameObject*>::iterator iter1 = m_pGameObject.begin();
+		list<CGameObject*>::iterator iter_end1 = m_pGameObject.end();
 
-		if (CollsionCheck(Player.x, Player.y, Player.size, Player.size, Monster.x, Monster.y, Monster.size, Monster.size))
+		for (iter1; iter1 != iter_end1; ++iter1)
 		{
-			//충돌하면 빨간색
-			((CMonster*)(*iterAnother))->SetColor(255, 0, 0, 255);
+			if (*iter == *iter1)
+				continue;
+
+			INFO monster  = (*iter)->GetInfo();
+			INFO monster1 = (*iter1)->GetInfo();
+
+			if (CollsionCheck(monster.x, monster.y, monster.size, monster.size, monster1.x, monster1.y, monster1.size, monster1.size))
+			{
+				//불값으로 무언가 충돌되었다고 판단 시킴
+				bCollCheck = true;
+				break;
+			}
+	
+		}
+	
+		if (bCollCheck == true)
+		{
+			//충돌되었으면 빨강
+			(*iter)->SetColor(255, 0, 0, 255);
 		}
 		else
-		{
-			//아니면 흰색
-			((CMonster*)(*iterAnother))->SetColor(255, 255, 255, 255);
+		{ 
+			//아니라면 흰색
+			(*iter)->SetColor(255, 255, 255, 0);
 		}
-	}
 
+	}
+	
 }
+
 
 bool CSceneManager::CollsionCheck(float _x, float _y, float _xSize, float _ySize, float _x1, float _y1, float _x1Size, float y1Size)
 {
@@ -151,7 +153,7 @@ bool CSceneManager::CollsionCheck(float _x, float _y, float _xSize, float _ySize
 	float bottomPlayer = _y - _ySize / 2;
 	float leftmonster = _x1 - _x1Size / 2;
 	float rightmonster = _x1 + _x1Size / 2;
-	float topmonster = _y1 - y1Size / 2;
+	float topmonster = _y1 + y1Size / 2;
 	float bottommonster = _y1 - y1Size / 2;
 
 

@@ -14,8 +14,8 @@ public:
 	virtual void Initialize(void);
 	virtual void Update(float _ElapsedTime);
 	float GetPlayerLife() { return m_fLife; }
-	void SetPlayerLife(float _fLife);
-	float GetAttack() { return m_fAttack; }
+	void  PlayerLifeDown(float _fAttack);
+	float PlayerAttack() { return m_fAttack; }
 
 };
 

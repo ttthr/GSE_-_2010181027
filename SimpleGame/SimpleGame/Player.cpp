@@ -3,7 +3,8 @@
 
 CPlayer::CPlayer()
 {	
-	
+	m_fLife = 30000;
+	m_fAttack = 10;
 }
 
 CPlayer::~CPlayer()
@@ -19,8 +20,7 @@ void CPlayer::Initialize(void)
 	m_Info.z = 0;
 	m_Info.size = 40;
 
-	m_fLife = 30000;
-	m_fAttack = 10;
+
 }
 
 void CPlayer::Update(float _ElapsedTime)
@@ -54,8 +54,10 @@ void CPlayer::Update(float _ElapsedTime)
 	}
 }
 
-void CPlayer::SetPlayerLife(float _fLife)
+void CPlayer::PlayerLifeDown(float _fAttack)
 {
-	m_fLife -= m_fLife;
+	m_fLife -= _fAttack;
 }
+
+
 

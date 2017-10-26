@@ -13,14 +13,8 @@ but WITHOUT ANY WARRANTY.
 #include "Dependencies\freeglut.h"
 
 #include "Renderer.h"
-#include "GameObject.h"
-#include "Player.h"
-#include "Monster.h"
 #include "SceneManager.h"
 
-//Renderer*      g_Renderer = NULL;
-CPlayer*       m_pPlayer = NULL;
-CMonster*      m_pMonster = NULL ;
 CSceneManager* m_pSceneManager = NULL;
 bool b_LButtonDown = false;
 DWORD d_StratTime = 0;
@@ -31,7 +25,8 @@ void RenderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-	float ElapsedTime = (timeGetTime() - d_StratTime) / 10.f;
+	//실제 시간으로 계산하기
+	float ElapsedTime = (timeGetTime() - d_StratTime) / 5.f;
 	d_StratTime = timeGetTime();
 
 
@@ -40,34 +35,24 @@ void RenderScene(void)
 
 	list<CGameObject*>* listGameObject = m_pSceneManager->GetgameObject();
 
-	//플레이어 생성
-	list<CGameObject*>::iterator iter_player = listGameObject->begin();
-	list<CGameObject*>::iterator iter_playerend = listGameObject->end();
+	//오브젝트 랜더
+	list<CGameObject*>::iterator iter = listGameObject->begin();
+	list<CGameObject*>::iterator iter_end= listGameObject->end();
 
-	for (iter_player; iter_player != iter_playerend; ++iter_player)
+	for (iter; iter != iter_end; ++iter)
 	{
-		INFO Info = ((CPlayer*)(*iter_player))->GetInfo();
+		INFO Info = (*iter)->GetInfo();
 
 		m_pSceneManager->GetRenderer()->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
 
 	}
-
-	//몬스터 생성
-	list<CGameObject*>::iterator iter_monster = listGameObject->begin();
-	list<CGameObject*>::iterator iter_monsterend = listGameObject->end();
-
-	for (iter_monster; iter_monster != iter_monsterend; ++iter_monster)
-	{
-		INFO Info = ((CMonster*)(*iter_monster))->GetInfo();
-
-		m_pSceneManager->GetRenderer()->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
-
-	}
-	//씬 매니저 몬스터, 플레이어 업데이트
+	//씬 매니저로 오브젝트 업데이트
 	m_pSceneManager->ObjectUpdate(ElapsedTime);
 
-	// 씬 매니저에서 두 객체를 다 들고 있기 때문에 충돌함수 여기서 구현 후 업데이트에서 돌려주기
+	// 씬 매니저에서 오브젝트들을 충돌시킨다.
 	m_pSceneManager->CollisionObject();
+
+
 
 	glutSwapBuffers();
 }
@@ -94,7 +79,7 @@ void MouseInput(int button, int state, int x, int y)
 			{
 
 				b_LButtonDown = false;
-				m_pSceneManager->AddMonstergameObject(float(x - 250), float(-(y - 250)), 0, 20, 255, 255, 255, 0);
+				m_pSceneManager->AddgameObject(float(x - 250), float(-(y - 250)), 0, 20, 255, 255, 255, 0);
 			}
 		}
 		break;
@@ -140,33 +125,15 @@ int main(int argc, char **argv)
 
 	// 처음 시간
 	d_StratTime = timeGetTime();
-	// Initialize Renderer
-	//g_Renderer = new Renderer(500, 500);
-
-
-	// 플레이어 생성 및 Initialize
-	m_pPlayer = new CPlayer();
-	m_pPlayer->Initialize();
-
-	// 몬스터 생성 및 Initialize
-	m_pMonster = new CMonster();
-	m_pMonster->Initialize();
 
 	// 씬매니저로 객체 생성 관리 list사용
 	m_pSceneManager = new CSceneManager();
-	
-	// 씬 매니저 이용 PlayerObject 생성
-	m_pSceneManager->AddgamePlayerObject(m_pPlayer->GetInfo().x , m_pPlayer->GetInfo().y, m_pPlayer->GetInfo().z, m_pPlayer->GetInfo().size, 0, 0, 255, 255);
 
 	for (int i = 0; i < 50; ++i)
 	{
-		// 씬 매니저 이용 MonstergameObject 50개 생성 ( for문 이용 )
-		m_pSceneManager->AddMonstergameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), m_pMonster->GetInfo().z, m_pMonster->GetInfo().size, 255, 255, 255, 0);
+		// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
+		m_pSceneManager->AddgameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), 0, 20, 255, 255, 255, 0);
 	}
-
-
-
-
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyInput);
@@ -177,8 +144,6 @@ int main(int argc, char **argv)
 
 	//객체 삭제
 	delete m_pSceneManager;
-	delete m_pPlayer;
-	delete m_pMonster;
 
     return 0;
 }
