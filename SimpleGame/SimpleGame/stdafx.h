@@ -41,5 +41,21 @@ enum eDirType
 	DIR_UP_L,
 	DIR_UP_R,
 	DIR_DOWN,
+	DIR_DOWN_L,
+	DIR_DOWN_R,
 	DIR_END,
 };
+
+typedef enum
+{
+	OBJECT_BUILDING,
+	OBJECT_CHARACTER,
+	OBJECT_END
+
+}EnumList;
+
+typedef enum
+{
+	OBJECT_BULLET,
+	OBJECT_ARROW,
+}BulletType;

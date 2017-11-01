@@ -30,27 +30,16 @@ void RenderScene(void)
 	d_StratTime = timeGetTime();
 
 
-	// Renderer Test
-	//g_Renderer->DrawSolidRect(0, 0, 0, 20, 1, 0, 1, 1);
-
-	list<CGameObject*>* listGameObject = m_pSceneManager->GetgameObject();
-
-	//오브젝트 랜더
-	list<CGameObject*>::iterator iter = listGameObject->begin();
-	list<CGameObject*>::iterator iter_end= listGameObject->end();
-
-	for (iter; iter != iter_end; ++iter)
-	{
-		INFO Info = (*iter)->GetInfo();
-
-		m_pSceneManager->GetRenderer()->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
-
-	}
 	//씬 매니저로 오브젝트 업데이트
 	m_pSceneManager->ObjectUpdate(ElapsedTime);
 
+	//씬 매니저로 랜더
+
+	m_pSceneManager->Render();
 	// 씬 매니저에서 오브젝트들을 충돌시킨다.
-	//m_pSceneManager->CollisionObject();
+	m_pSceneManager->CollisionObject();
+	m_pSceneManager->MonsterBulletColl();
+
 
 	glutSwapBuffers();
 }
@@ -77,7 +66,7 @@ void MouseInput(int button, int state, int x, int y)
 			{
 
 				b_LButtonDown = false;
-				m_pSceneManager->AddgameObject(float(x - 250), float(-(y - 250)), 0, 20, 255, 255, 255, 0);
+				m_pSceneManager->AddMonsterObject(float(x - 250), float(-(y - 250)), OBJECT_CHARACTER);
 			}
 		}
 		break;
@@ -127,14 +116,14 @@ int main(int argc, char **argv)
 	// 씬매니저로 객체 생성 관리 list사용
 	m_pSceneManager = new CSceneManager();
 
-	//for (int i = 0; i < 50; ++i)
-	//{
-	//	// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
-	//	m_pSceneManager->AddgameObject(float(rand() % 500 - 250), float(rand() % 500 - 250), 0, 20, 255, 255, 255, 0);
-	//}
+	for (int i = 0; i < 50; ++i)
+	{
+		// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
+		m_pSceneManager->AddMonsterObject(float(rand() % 500 - 250), float(rand() % 500 - 250), OBJECT_CHARACTER);
+	}
 
-	m_pSceneManager->AddgameObject(OBJECT_CHARACTER);
 	m_pSceneManager->AddBuliding(OBJECT_BUILDING);
+
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);

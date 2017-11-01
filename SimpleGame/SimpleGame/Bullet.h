@@ -1,5 +1,10 @@
 #pragma once
 #include "GameObject.h"
+
+enum Bullet
+{
+	
+};
 class CBullet :
 	public CGameObject
 {
@@ -13,11 +18,20 @@ public:
 private:
 	eDirType  m_eType;
 	float     m_fSpeed;
+	BulletType m_eBulletType;
 public:
 	inline void SetDir(eDirType eType)
 	{
 		m_eType = eType;
 	}
+	inline void SetType(BulletType bType)
+	{
+		m_eBulletType = bType;
+	}
+public:
+	void Dir();
+	void Type();
+
 
 };
 
