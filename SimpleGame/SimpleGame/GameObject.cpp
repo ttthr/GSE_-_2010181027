@@ -6,7 +6,7 @@
 CGameObject::CGameObject()
 {
 
-	m_fspeed = 0.5;
+	m_fspeed = 0.02f;
 	m_xDir = 1;
 	m_yDir = 1;
 	m_fLife = 210;
@@ -24,25 +24,10 @@ void CGameObject::Initialize(void)
 	
 }
 
-void CGameObject::Update(float _ElapsedTime)
+int CGameObject::Update(float _ElapsedTime)
 {
-	//타임 매니저 같은 역할을 하기 위한 변수 
-	//float ElapsedTime = 0.1;
-
-
-	m_Info.x += m_fspeed * m_xDir * _ElapsedTime;
-	m_Info.y += m_fspeed * m_yDir * _ElapsedTime;
-
-	if (m_Info.x > 250)
-		m_xDir *= -1;
-	else if (m_Info.x <= -250)
-		m_xDir *= -1;
-
-
-	if (m_Info.y > 250)
-		m_yDir *= -1;
-	else if (m_Info.y <= -250)
-		m_yDir *= -1;
+	
+	return 0;
 
 }
 

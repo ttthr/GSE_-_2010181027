@@ -155,6 +155,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buliding.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Buliding.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />

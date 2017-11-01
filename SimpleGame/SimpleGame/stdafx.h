@@ -32,3 +32,14 @@ typedef struct INFO
 	float b;
 	float a;
 }INFO;
+
+enum eDirType
+{
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_UP,
+	DIR_UP_L,
+	DIR_UP_R,
+	DIR_DOWN,
+	DIR_END,
+};

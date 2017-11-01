@@ -4,6 +4,24 @@
 #include "Monster.h"
 #include "Renderer.h"
 #include "GameTimer.h"
+#include "Bullet.h"
+#include "Buliding.h"
+//
+//#define	OBJECT_BUILDING = 1;
+//#define	OBJECT_CHARACTER = 2;
+//#define	OBJECT_BULLET = 3;
+//#define	OBJECT_ARROW = 4;
+//#define	OBJECT_END =5;
+
+typedef enum
+{
+	OBJECT_BUILDING,
+	OBJECT_CHARACTER,
+	OBJECT_BULLET,
+	OBJECT_ARROW,
+	OBJECT_END
+
+}EnumList;
 
 class CSceneManager
 {
@@ -14,9 +32,11 @@ public:
 private:
 	list<CGameObject*> m_pGameObject;
 	Renderer* m_pRenderer = NULL;
+	EnumList m_pEnum;
 public:
 	list<CGameObject*>* GetgameObject() { return &m_pGameObject; }
-	void AddgameObject(INFO _Info);
+	void AddgameObject(EnumList _type);
+	void AddBuliding(EnumList _type);
 	void AddgameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a);
 	void ObjectUpdate(float _ElapsedTime);
 	void ReleaseObject();

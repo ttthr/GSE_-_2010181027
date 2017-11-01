@@ -25,19 +25,33 @@ CSceneManager::~CSceneManager()
 	}
 		
 }
-void CSceneManager::AddgameObject(INFO _Info)
+void CSceneManager::AddgameObject(EnumList _type)
 {
-	CGameObject* pObject = new CGameObject();
-
-	pObject->SetInfo(_Info);
+	CGameObject* pObject = new CPlayer();
+	((CPlayer*)pObject)->Initialize();
+	((CPlayer*)pObject)->SetInfo(INFO{ pObject->GetInfo().x , pObject->GetInfo().y , pObject->GetInfo().z, pObject->GetInfo().size, 255, 255, 255, 255 });
+	((CPlayer*)pObject)->SetBullet(&m_pGameObject);
 
 	m_pGameObject.push_back(pObject);
 
 
 }
+
+void CSceneManager::AddBuliding(EnumList _type)
+{
+
+	CGameObject* pObject = new CBuliding();
+	((CBuliding*)pObject)->Initialize();
+	((CBuliding*)pObject)->SetInfo(INFO{ pObject->GetInfo().x , pObject->GetInfo().y , pObject->GetInfo().z, pObject->GetInfo().size, 255, 255, 0, 255 });
+	((CBuliding*)pObject)->SetBullet(&m_pGameObject);
+	m_pGameObject.push_back(pObject);
+}
+
 void CSceneManager::AddgameObject(float _x, float _y, float _z, float _size, float _r, float _g, float _b, float _a)
 {
-	CGameObject* pObject = new CGameObject();
+
+	CGameObject* pObject = new CMonster();
+	((CMonster*)pObject)->Initialize();
 	pObject->SetInfo(INFO{ _x,  _y , _z, _size, _r, _g, _b, _a });
 
 	// 몬스터들 자동으로 이동 
@@ -61,26 +75,38 @@ void CSceneManager::AddgameObject(float _x, float _y, float _z, float _size, flo
 
 	
 }
+
 void CSceneManager::ObjectUpdate(float _ElapsedTime)
 {
 
-	//오브젝트 업데이트
+	//몬스터 오브젝트 업데이트
 	list<CGameObject*>::iterator iter    = m_pGameObject.begin();
 	list<CGameObject*>::iterator iter_end= m_pGameObject.end();
 
-	for (; iter != iter_end;)
-	{
-		(*iter)->Update(_ElapsedTime);
-		(*iter)->DecreaseLife(1);
 
-		if ((*iter)->GetMonsterLifeTime() <= 0)
-		{
-			delete (*iter);
-			iter = m_pGameObject.erase(iter);
-		}
-		else
-			iter++;
+	for (iter; iter != iter_end; ++iter)
+	{
+		((CMonster*)(*iter))->Update(_ElapsedTime);
+		((CPlayer*)(*iter))->Update(_ElapsedTime);
+ 		((CBullet*)(*iter))->Update(_ElapsedTime);
+		((CBuliding*)(*iter))->Update(_ElapsedTime);
 	}
+
+
+	
+	//for (; iter != iter_end;)
+	//{
+	//	(*iter)->Update(_ElapsedTime);
+	//	(*iter)->DecreaseLife(1);
+
+	//	if ((*iter)->GetMonsterLifeTime() <= 0)
+	//	{
+	//		delete (*iter);
+	//		iter = m_pGameObject.erase(iter);
+	//	}
+	//	else
+	//		iter++;
+	//}
 
 
 }
@@ -113,11 +139,11 @@ void CSceneManager::CollisionObject()
 
 		for (iter1; iter1 != iter_end1; ++iter1)
 		{
-			if (*iter == *iter1)
+			if (((CMonster*)*iter) == ((CMonster*)*iter1))
 				continue;
 
-			INFO monster  = (*iter)->GetInfo();
-			INFO monster1 = (*iter1)->GetInfo();
+			INFO monster  = ((CMonster*)(*iter))->GetInfo();
+			INFO monster1 = ((CMonster*)(*iter1))->GetInfo();
 
 			if (CollsionCheck(monster.x, monster.y, monster.size, monster.size, monster1.x, monster1.y, monster1.size, monster1.size))
 			{
@@ -131,12 +157,12 @@ void CSceneManager::CollisionObject()
 		if (bCollCheck == true)
 		{
 			//충돌되었으면 빨강
-			(*iter)->SetColor(255, 0, 0, 255);
+			((CMonster*)(*iter))->SetColor(255, 0, 0, 255);
 		}
 		else
 		{ 
 			//아니라면 흰색
-			(*iter)->SetColor(255, 255, 255, 0);
+			((CMonster*)(*iter))->SetColor(255, 255, 255, 0);
 		}
 
 	}

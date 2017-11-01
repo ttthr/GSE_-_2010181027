@@ -34,6 +34,9 @@
     <Filter Include="소스 파일\GameObject\Bullet">
       <UniqueIdentifier>{ef8a601e-a1e2-405b-9c65-5645fe4ed3f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\GameObject\Buliding">
+      <UniqueIdentifier>{b0d17f54-9a61-4ecc-a487-53320cac1970}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -66,6 +69,9 @@
     <ClInclude Include="Bullet.h">
       <Filter>소스 파일\GameObject\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Buliding.h">
+      <Filter>소스 파일\GameObject\Buliding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>소스 파일\GameObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Buliding.cpp">
+      <Filter>소스 파일\GameObject\Buliding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

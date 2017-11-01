@@ -10,7 +10,7 @@ private:
 	float  m_fSpeed;
 public:
 	virtual void Initialize(void);
-	virtual void Update(float _ElapsedTime);
+	virtual int Update(float _ElapsedTime);
 
 
 };
