@@ -15,11 +15,11 @@ public:
 	virtual void Initialize(void);
 	virtual int Update(float _ElapsedTime);
 private:
-	list<CBullet*>* m_pBulletList;
+	list<CGameObject*>* m_pBulletList;
 	bool     m_bCheck;
 public:
-	void  SetBullet(list<CBullet*>* pBulletList);
-	CBullet* CreateBullet(eDirType eType);
+	void  SetBullet(list<CGameObject*>* pBulletList);
+	CGameObject* CreateBullet(eDirType eType);
 	float GetLife() { return m_fLife; }
 	float GetMonsterAttack() { return m_fAttack; }
 	void  MonsterLifeDown(float _fAttack) { m_fLife -= _fAttack; }

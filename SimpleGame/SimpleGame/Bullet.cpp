@@ -6,11 +6,11 @@ CBullet::CBullet()
 {
 }
 
-CBullet::CBullet(float _PlayerPosX, float _PlayerPosY)
+CBullet::CBullet(float _PosX, float _PosY)
 {
  	
-	m_Info.x = _PlayerPosX;
-	m_Info.y = _PlayerPosY;
+	m_Info.x = _PosX;
+	m_Info.y = _PosY;
 
 }
 
@@ -23,8 +23,9 @@ void CBullet::Initialize(void)
 {
 	m_Info.z = 0;
 	m_Info.size = 5;
-	m_fSpeed = 0.3;
-	//m_Info.r = 255;
+	m_fSpeed = 0.1f;
+	m_fAttack = 1.0f;
+	//m_Info.r = 155;
 	//m_Info.g = 0;
 	//m_Info.b = 0;
 	//m_Info.a = 0;

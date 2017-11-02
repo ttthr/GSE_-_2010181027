@@ -10,7 +10,7 @@ class CBullet :
 {
 public:
 	CBullet();
-	CBullet(float _PlayerPosX, float _PlayerPosY);
+	CBullet(float _PosX, float _PosY);
 	virtual ~CBullet();
 
 	virtual void Initialize(void);
@@ -18,6 +18,7 @@ public:
 private:
 	eDirType  m_eType;
 	float     m_fSpeed;
+	float     m_fAttack;
 	BulletType m_eBulletType;
 public:
 	inline void SetDir(eDirType eType)
@@ -31,6 +32,7 @@ public:
 public:
 	void Dir();
 	void Type();
+	float GetAttack() { return m_fAttack; }
 
 
 };

@@ -22,8 +22,9 @@ public:
 	~CSceneManager();
 private:
 	CBuliding* m_pBuliding = NULL;
-	list<CBullet*>  m_pBullet;
-	list<CMonster*> m_pMonster;
+	list<CGameObject*>  m_pBullet;
+	list<CGameObject*>  m_pMonster;
+	list<CGameObject*>  m_pGameObject[OBJECT_END];
 	Renderer* m_pRenderer = NULL;
 	EnumList m_pEnum;
 public:

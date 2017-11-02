@@ -6,12 +6,13 @@
 CGameObject::CGameObject()
 {
 
-	m_fspeed = 0.2f;
+	//m_fspeed = 0.2f;
 	m_xDir = 1;
 	m_yDir = 1;
-	m_fLife = 210;
-	m_fLifeTime = 1400.f;
-	m_fAttack = 50.f;
+	m_fBulletShotTime = 3.f;
+	//m_fLife = 210;
+	//m_fLifeTime = 1400.f;
+	//m_fAttack = 50.f;
 
 }
 CGameObject::~CGameObject()
@@ -26,9 +27,8 @@ void CGameObject::Initialize(void)
 
 int CGameObject::Update(float _ElapsedTime)
 {
-	
-	return 0;
 
+	return 0;
 }
 
 void CGameObject::SetInfo(INFO _Info)

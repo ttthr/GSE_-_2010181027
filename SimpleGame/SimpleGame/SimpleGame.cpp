@@ -37,9 +37,9 @@ void RenderScene(void)
 
 	m_pSceneManager->Render();
 	// 씬 매니저에서 오브젝트들을 충돌시킨다.
-	m_pSceneManager->CollisionObject();
+	//m_pSceneManager->CollisionObject();
 	m_pSceneManager->MonsterBulletColl();
-
+	//m_pSceneManager->BulidingMonsterColl();
 
 	glutSwapBuffers();
 }
@@ -116,9 +116,9 @@ int main(int argc, char **argv)
 	// 씬매니저로 객체 생성 관리 list사용
 	m_pSceneManager = new CSceneManager();
 
-	for (int i = 0; i < 50; ++i)
-	{
 		// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
+	for (int i = 0; i < 30; ++i)
+	{
 		m_pSceneManager->AddMonsterObject(float(rand() % 500 - 250), float(rand() % 500 - 250), OBJECT_CHARACTER);
 	}
 
