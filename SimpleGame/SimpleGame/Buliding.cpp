@@ -22,53 +22,27 @@ void CBuliding::Initialize(void)
 	m_Info.b = 0;
 	m_Info.a = 255;
 
-	m_bCheck = true;
-
 	m_fLife = 500;
+	m_fBulletShotTime = 3.f;
 
 }
 
 int CBuliding::Update(float _ElapsedTime)
 {
-	
-	//if (GetAsyncKeyState(VK_SPACE) & 0x8000 && m_bCheck)
-	//{
-	//	m_pBulletList->push_back(CreateBullet(DIR_DOWN));
-	//	m_bCheck = false;
-	//}
-	//else if (!(GetAsyncKeyState(VK_SPACE) & 0x8000))
-	//	m_bCheck = true;
-	m_fBulletShotTime += 1;
 
-	if (m_fBulletShotTime >= 3.f)
+
+	m_fBulletShotTime -= _ElapsedTime;
+
+	if (m_fBulletShotTime <= 0)
 	{
-		m_pBulletList->push_back(CreateBullet(DIR_DOWN));
-		m_pBulletList->push_back(CreateBullet(DIR_LEFT));
-		m_pBulletList->push_back(CreateBullet(DIR_RIGHT));
-		m_pBulletList->push_back(CreateBullet(DIR_UP_L));
-		m_pBulletList->push_back(CreateBullet(DIR_UP_R));
-		m_pBulletList->push_back(CreateBullet(DIR_UP));
-		m_pBulletList->push_back(CreateBullet(DIR_DOWN_L));
-		m_pBulletList->push_back(CreateBullet(DIR_DOWN_R));
+		m_pBulletList->push_back(CreateBullet());
+
+		m_fBulletShotTime = 3.f;
 	}
+	//데드체크
 
-	m_fBulletShotTime = 0;
-
-	//if (0 < _ElapsedTime < 30 && m_bCheck)
-	//{
-	//	m_pBulletList->push_back(CreateBullet(DIR_DOWN));
-	//	m_pBulletList->push_back(CreateBullet(DIR_LEFT));
-	//	m_pBulletList->push_back(CreateBullet(DIR_RIGHT));
-	//	m_pBulletList->push_back(CreateBullet(DIR_UP_L));
-	//	m_pBulletList->push_back(CreateBullet(DIR_UP_R));
-	//	m_pBulletList->push_back(CreateBullet(DIR_UP));
-	//	m_pBulletList->push_back(CreateBullet(DIR_DOWN_L));
-	//	m_pBulletList->push_back(CreateBullet(DIR_DOWN_R));
-
-	//	m_bCheck = false;
-	//}
-
-	return 0;
+	return  CGameObject::Update(_ElapsedTime);
+	
 }
 
 void CBuliding::SetBullet(list<CGameObject*>* pBulletList)
@@ -76,12 +50,12 @@ void CBuliding::SetBullet(list<CGameObject*>* pBulletList)
 	m_pBulletList = pBulletList;
 }
 
-CGameObject* CBuliding::CreateBullet(eDirType eType)
+CGameObject* CBuliding::CreateBullet()
 {
+	float fRadianAngle = float (rand() % 360 ) / 180 * 3.141592f;
 
-	CGameObject *pBullet = new CBullet(m_Info.x, m_Info.y);
+	CGameObject *pBullet = new CBullet(m_Info.x + 57 * -cosf(fRadianAngle), m_Info.y + 57 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle), 20);
 	pBullet->Initialize();
-	dynamic_cast<CBullet*>(pBullet)->SetDir(eType);
 	dynamic_cast<CBullet*>(pBullet)->SetType(OBJECT_ARROW);
 
 	return pBullet;

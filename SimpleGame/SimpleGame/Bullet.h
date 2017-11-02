@@ -10,30 +10,35 @@ class CBullet :
 {
 public:
 	CBullet();
-	CBullet(float _PosX, float _PosY);
+	CBullet(float _PosX, float _PosY , float _DirX , float _DirY , float fAttack );
 	virtual ~CBullet();
 
 	virtual void Initialize(void);
-	virtual int Update(float _ElapsedTime);
+	virtual int  Update(float _ElapsedTime);
 private:
-	eDirType  m_eType;
-	float     m_fSpeed;
-	float     m_fAttack;
-	BulletType m_eBulletType;
+	OBJECT_TYPE  m_eBulletType;
 public:
-	inline void SetDir(eDirType eType)
-	{
-		m_eType = eType;
-	}
-	inline void SetType(BulletType bType)
+	inline void SetType(OBJECT_TYPE bType)
 	{
 		m_eBulletType = bType;
+
+		switch (m_eBulletType)
+		{
+		case OBJECT_BULLET:
+			m_Info.r = 255;
+			m_Info.g = 0;
+			m_Info.b = 0;
+			m_Info.a = 255;
+			break;
+		case OBJECT_ARROW:
+			m_Info.r = 0;
+			m_Info.g = 150;
+			m_Info.b = 255;
+			m_Info.a = 255;
+			break;
+		}
 	}
 public:
-	void Dir();
-	void Type();
-	float GetAttack() { return m_fAttack; }
-
-
+	void Move(float _ElapsedTime);
 };
 

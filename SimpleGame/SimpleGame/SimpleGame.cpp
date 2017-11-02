@@ -26,7 +26,7 @@ void RenderScene(void)
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	//실제 시간으로 계산하기
-	float ElapsedTime = (timeGetTime() - d_StratTime) / 5.f;
+	float ElapsedTime = float(timeGetTime() - d_StratTime) / 1000.f;
 	d_StratTime = timeGetTime();
 
 
@@ -37,9 +37,10 @@ void RenderScene(void)
 
 	m_pSceneManager->Render();
 	// 씬 매니저에서 오브젝트들을 충돌시킨다.
-	//m_pSceneManager->CollisionObject();
-	m_pSceneManager->MonsterBulletColl();
-	//m_pSceneManager->BulidingMonsterColl();
+	
+	m_pSceneManager->CollisionObject();
+	m_pSceneManager->BulletColl(OBJECT_CHARACTER);
+	m_pSceneManager->BulletColl(OBJECT_BUILDING);
 
 	glutSwapBuffers();
 }
@@ -66,7 +67,7 @@ void MouseInput(int button, int state, int x, int y)
 			{
 
 				b_LButtonDown = false;
-				m_pSceneManager->AddMonsterObject(float(x - 250), float(-(y - 250)), OBJECT_CHARACTER);
+				m_pSceneManager->AddActorObject(float(x - 250), float(-(y - 250)), OBJECT_CHARACTER);
 			}
 		}
 		break;
@@ -119,10 +120,10 @@ int main(int argc, char **argv)
 		// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
 	for (int i = 0; i < 30; ++i)
 	{
-		m_pSceneManager->AddMonsterObject(float(rand() % 500 - 250), float(rand() % 500 - 250), OBJECT_CHARACTER);
+		m_pSceneManager->AddActorObject(float(rand() % 500 - 250), float(rand() % 500 - 250), OBJECT_CHARACTER);
 	}
 
-	m_pSceneManager->AddBuliding(OBJECT_BUILDING);
+	m_pSceneManager->AddActorObject(0,0,OBJECT_BUILDING);
 
 
 	glutDisplayFunc(RenderScene);

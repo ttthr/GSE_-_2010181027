@@ -7,23 +7,16 @@ class CMonster :
 public:
 	CMonster();
 	virtual ~CMonster();
-private:
-	float  m_fSpeed;
-	float  m_fLife;
-	float  m_fAttack;
 public:
 	virtual void Initialize(void);
 	virtual int Update(float _ElapsedTime);
 private:
 	list<CGameObject*>* m_pBulletList;
-	bool     m_bCheck;
+	float               m_fBulletShotTime;
 public:
 	void  SetBullet(list<CGameObject*>* pBulletList);
-	CGameObject* CreateBullet(eDirType eType);
-	float GetLife() { return m_fLife; }
-	float GetMonsterAttack() { return m_fAttack; }
-	void  MonsterLifeDown(float _fAttack) { m_fLife -= _fAttack; }
-
-
+	CGameObject* CreateBullet();
+private:
+	void Move(float _ElapsedTime);
 };
 

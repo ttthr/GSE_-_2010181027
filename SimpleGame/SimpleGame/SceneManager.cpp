@@ -18,6 +18,7 @@ CSceneManager::CSceneManager()
 CSceneManager::~CSceneManager()
 {
 	ReleaseObject();
+
 	if (m_pRenderer)
 	{
 		delete m_pRenderer;
@@ -25,138 +26,134 @@ CSceneManager::~CSceneManager()
 	}
 
 }
-void CSceneManager::AddBuliding(EnumList _type)
+
+void CSceneManager::AddActorObject(float _x, float _y, OBJECT_TYPE _type)
 {
-	
-	m_pBuliding = new CBuliding();
-	m_pBuliding->Initialize();
-	m_pBuliding->SetInfo(INFO{ m_pBuliding->GetInfo().x, m_pBuliding->GetInfo().y , m_pBuliding->GetInfo().z ,m_pBuliding->GetInfo().size, m_pBuliding->GetInfo().r, m_pBuliding->GetInfo().g, m_pBuliding->GetInfo().b, m_pBuliding->GetInfo().a });
-	m_pBuliding->SetBullet(&m_pBullet);
+	CGameObject* pGameObject{};
 
-}
-
-void CSceneManager::AddMonsterObject(float _x, float _y, EnumList _type)
-{
-
-	CGameObject* pObject = new CMonster();
-	pObject->Initialize();
-	pObject->SetInfo(INFO{ _x,  _y , pObject->GetInfo().z ,pObject->GetInfo().size, pObject->GetInfo().r, pObject->GetInfo().g, pObject->GetInfo().b, pObject->GetInfo().a });
-	((CMonster*)pObject)->SetBullet(&m_pBullet);
-	// 몬스터들 자동으로 이동 
-	// 랜덤한 방향 설정
-	int randx;
-	int randy;
-	while (1)
+	switch (_type)
 	{
-		randx = rand() % 3 - 1;
-		randy = rand() % 3 - 1;
-
-
-		if (randx == 0 && randy == 0)
-			continue;
-		else
-			break;
+	case OBJECT_BUILDING:
+		pGameObject = new CBuliding();
+		static_cast<CBuliding*>(pGameObject)->SetBullet(&m_pGameObject[OBJECT_BULLET]);
+		break;
+	case OBJECT_CHARACTER:
+		pGameObject = new CMonster();
+		static_cast<CMonster*>(pGameObject)->SetBullet(&m_pGameObject[OBJECT_BULLET]);
+		break;
+	default:
+		return;
 	}
-	pObject->SetDir(randx, randy);
 
-	m_pMonster.push_back(pObject);
+	//공통 생성
+	pGameObject->Initialize();
+	pGameObject->SetPos(_x, _y);
 
+	m_pGameObject[_type].push_back(pGameObject);
 
 }
 
 void CSceneManager::ObjectUpdate(float _ElapsedTime)
 {
-
-	//불렛 업데이트
-	list<CGameObject*>::iterator iterBullet = m_pBullet.begin();
-	list<CGameObject*>::iterator iterBullet_end = m_pBullet.end();
-
-	for (iterBullet; iterBullet != iterBullet_end; ++iterBullet)
+	for (int i = 0; i < OBJECT_END; ++i)
 	{
-		((CBullet*)(*iterBullet))->Update(_ElapsedTime);
+		if (m_pGameObject[i].empty())
+			continue;
 
+		// 공통 업데이트
+		list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
+
+		for (iter; iter != m_pGameObject[i].end();)
+		{
+			int iResult = (*iter)->Update(_ElapsedTime);
+
+			//리턴 값
+			if (iResult & 1)
+			{
+				delete (*iter);
+				iter = m_pGameObject[i].erase(iter);
+			}
+			else
+			{
+				++iter;
+			}
+		}
 	}
-
-	//몬스터 오브젝트 업데이트
-
-	list<CGameObject*>::iterator iterMonster     =  m_pMonster.begin();
-	list<CGameObject*>::iterator iter_Monsterend =  m_pMonster.end();
-
-	for (iterMonster; iterMonster != iter_Monsterend; ++iterMonster)
-	{
-		((CMonster*)(*iterMonster))->Update(_ElapsedTime);
-	}
-
-	//빌딩 업데이트
-	m_pBuliding->Update(_ElapsedTime);
 
 }
 
 void CSceneManager::ReleaseObject()
 {
-	list<CGameObject*>::iterator iter     = m_pMonster.begin();
-	list<CGameObject*>::iterator iter_end = m_pMonster.end();
-
-	for (iter; iter != iter_end; ++iter)
+	for (int i = 0; i < OBJECT_END; ++i)
 	{
-		delete (*iter);
-		iter = m_pMonster.erase(iter);
+		if (m_pGameObject[i].empty())
+			continue;
+		list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
+
+		for (iter; iter != m_pGameObject[i].end();)
+		{
+
+			delete (*iter);
+			iter = m_pGameObject[i].erase(iter);
+
+		}
 	}
+
+	//for (int i = 0; i < OBJECT_END; ++i)
+	//{
+	//	if (m_pGameObject[i].empty())
+	//		continue;
+
+	//	list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
+	//	list<CGameObject*>::iterator iter_end = m_pGameObject[i].end();
+
+	//	for (iter; iter != iter_end; ++iter)
+	//		delete (*iter);
+
+	//	iter = m_pGameObject[i].begin();
+	//	m_pGameObject[i].erase(iter, iter_end);
+	//}
 
 }
 
 void CSceneManager::Render()
 {
-
-	//불렛 랜더
-	list<CGameObject*>::iterator iterBullet     = m_pBullet.begin();
-	list<CGameObject*>::iterator iterBullet_end = m_pBullet.end();
-
-	for (iterBullet; iterBullet != iterBullet_end; ++iterBullet)
+	for (int i = 0; i < OBJECT_END; ++i)
 	{
-		INFO Info = ((CBullet*)(*iterBullet))->GetInfo();
+		if (m_pGameObject[i].empty())
+			continue;
+		list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
+		list<CGameObject*>::iterator iter_end = m_pGameObject[i].end();
 
-		m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+		for (iter; iter != iter_end; ++iter)
+		{
+			INFO Info = (*iter)->GetInfo();
+			m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+		}
 	}
-
-	//몬스터 랜더
-	list<CGameObject*>::iterator iterMonster     = m_pMonster.begin();
-	list<CGameObject*>::iterator iter_Monsterend = m_pMonster.end();
-
-	for (iterMonster; iterMonster != iter_Monsterend; ++iterMonster)
-	{
-		INFO Info = ((CMonster*)(*iterMonster))->GetInfo();
-
-		m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
-
-	}
-
-	//빌딩 랜더
-	m_pRenderer->DrawSolidRect(m_pBuliding->GetInfo().x, m_pBuliding->GetInfo().y, m_pBuliding->GetInfo().z, m_pBuliding->GetInfo().size, m_pBuliding->GetInfo().r, m_pBuliding->GetInfo().g, m_pBuliding->GetInfo().b, m_pBuliding->GetInfo().a);
-
 
 }
 
 void CSceneManager::CollisionObject()
 {
 
-	
-	list<CGameObject*>::iterator iter     = m_pMonster.begin();
-	list<CGameObject*>::iterator iter_end = m_pMonster.end();
 
-	for (iter; iter != iter_end;++iter)
+	list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_CHARACTER].begin();
+	list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_CHARACTER].end();
+
+	for (iter; iter != iter_end; ++iter)
 	{
 		bool bCollCheck = false;
 
-		list<CGameObject*>::iterator iter1     = m_pMonster.begin();
-		list<CGameObject*>::iterator iter_end1 = m_pMonster.end();
+		list<CGameObject*>::iterator iter1 = m_pGameObject[OBJECT_CHARACTER].begin();
+		list<CGameObject*>::iterator iter_end1 = m_pGameObject[OBJECT_CHARACTER].end();
 
 		for (iter1; iter1 != iter_end1; ++iter1)
 		{
 			if ((*iter) == (*iter1))
 				continue;
 
-			INFO monster  = (*iter)->GetInfo();
+			INFO monster = (*iter)->GetInfo();
 			INFO monster1 = (*iter1)->GetInfo();
 
 			if (CollsionCheck(monster.x, monster.y, monster.size, monster.size, monster1.x, monster1.y, monster1.size, monster1.size))
@@ -165,22 +162,52 @@ void CSceneManager::CollisionObject()
 				bCollCheck = true;
 				break;
 			}
-	
+
 		}
-	
+
 		if (bCollCheck == true)
 		{
 			//충돌되었으면 빨강
 			(*iter)->SetColor(255, 0, 0, 255);
 		}
 		else
-		{ 
+		{
 			//아니라면 흰색
 			(*iter)->SetColor(255, 255, 255, 0);
 		}
 
 	}
-	
+
+}
+
+void CSceneManager::BulletColl(OBJECT_TYPE _type)
+{
+	if (m_pGameObject[OBJECT_BULLET].empty() || m_pGameObject[_type].empty())
+		return;
+
+	list<CGameObject*>::iterator iterMonster = m_pGameObject[_type].begin();
+	list<CGameObject*>::iterator iterMonster_end = m_pGameObject[_type].end();
+
+	for (iterMonster; iterMonster != iterMonster_end; ++iterMonster)
+	{
+		list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_BULLET].begin();
+
+		for (iter; iter != m_pGameObject[OBJECT_BULLET].end(); )
+		{
+			INFO Bullet = (*iter)->GetInfo();
+			INFO Monster = (*iterMonster)->GetInfo();
+
+			if (CollsionCheck(Bullet.x, Bullet.y, Bullet.size, Bullet.size, Monster.x, Monster.y, Monster.size, Monster.size))
+			{
+				(*iterMonster)->DecreaseLife((*iter)->GetAttack());
+
+				delete (*iter);
+				iter = m_pGameObject[OBJECT_BULLET].erase(iter);
+			}
+			else
+				++iter;
+		}
+	}
 }
 
 //void CSceneManager::CollisionMonsterBuliding()
@@ -216,85 +243,42 @@ void CSceneManager::CollisionObject()
 //
 //}
 
-void CSceneManager::MonsterBulletColl()
-{
-	list<CGameObject*>::iterator iter     = m_pBullet.begin();
-	list<CGameObject*>::iterator iter_end = m_pBullet.end();
 
-	if (!m_pBullet.empty())
-	{
-		for (iter ; iter != iter_end; ++iter)
-		{
-			if (!m_pMonster.empty())
-			{
-				list<CGameObject*>::iterator iter1     = m_pMonster.begin();
-				list<CGameObject*>::iterator iter_end1 = m_pMonster.end();
-
-				for (iter1 ; iter1 != iter_end1; ++iter1)
-				{
-					INFO Bullet = ((CBullet*)*iter)->GetInfo();
-					INFO Monster = ((CMonster*)*iter1)->GetInfo();
-
-					if (CollsionCheck(Bullet.x, Bullet.y, Bullet.size, Bullet.size, Monster.x, Monster.y, Monster.size, Monster.size))
-					{
-						
-						((CMonster*)*iter1)->MonsterLifeDown(((CBullet*)*iter)->GetAttack());
-
-						delete (*iter);
-						iter = m_pBullet.erase(iter);
-
-						if (((CMonster*)*iter1)->GetLife() <= 0)
-						{
-							delete (*iter1);
-							iter1 = m_pMonster.erase(iter1);
-						}
-					
-						return;
-				
-					}
-
-				}
-			}
-		}
-
-	}
-}
-
-void CSceneManager::BulidingMonsterColl()
-{
-	
-	
-		list<CGameObject*>::iterator iter     = m_pMonster.begin();
-		list<CGameObject*>::iterator iter_end = m_pMonster.end();
-
-						
-		if (!m_pMonster.empty())
-		{
-			for (iter; iter != iter_end; ++iter)
-			{
-
-				INFO Monster = (*iter)->GetInfo();
-
-			
-					if (CollsionCheck(m_pBuliding->GetInfo().x, m_pBuliding->GetInfo().y, m_pBuliding->GetInfo().size, m_pBuliding->GetInfo().size, Monster.x, Monster.y, Monster.size, Monster.size))
-					{
-						{
-							m_pBuliding->BulidingLifeDown(((CMonster*)(*iter))->GetMonsterAttack());
-
-							if (m_pBuliding->GetLife() <= 0)
-							{
-								delete m_pBuliding;
-								//m_pBuliding = NULL;
-							}
-						}
-					}
-				
-			
-			}
-
-		}
-	}
-
+//void CSceneManager::BulidingMonsterColl()
+//{
+//	
+//	
+//		list<CGameObject*>::iterator iter     = m_pMonster.begin();
+//		list<CGameObject*>::iterator iter_end = m_pMonster.end();
+//
+//						
+//		if (!m_pMonster.empty())
+//		{
+//			for (iter; iter != iter_end; ++iter)
+//			{
+//
+//				INFO Monster = (*iter)->GetInfo();
+//
+//			
+//					if (CollsionCheck(m_pBuliding->GetInfo().x, m_pBuliding->GetInfo().y, m_pBuliding->GetInfo().size, m_pBuliding->GetInfo().size, Monster.x, Monster.y, Monster.size, Monster.size))
+//					{
+//						{
+//							m_pBuliding->BulidingLifeDown(((CMonster*)(*iter))->GetMonsterAttack());
+//
+//							if (m_pBuliding->GetLife() <= 0)
+//							{
+//								delete m_pBuliding;
+//								//m_pBuliding = NULL;
+//							}
+//						}
+//					}
+//				
+//			
+//			}
+//
+//		}
+//	}
+//
 
 bool CSceneManager::CollsionCheck(float _x, float _y, float _xSize, float _ySize, float _x1, float _y1, float _x1Size, float y1Size)
 {

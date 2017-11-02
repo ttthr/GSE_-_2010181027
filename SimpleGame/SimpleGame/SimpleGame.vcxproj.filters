@@ -19,12 +19,6 @@
     <Filter Include="소스 파일\GameObject">
       <UniqueIdentifier>{95a98946-b58b-489a-9bab-0e900605ed8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObject\Player">
-      <UniqueIdentifier>{3fefec41-7a62-44a7-beda-1113b0bcd8f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Monster">
-      <UniqueIdentifier>{9d7ca9b5-1caa-4abe-a107-722e07a0fd90}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\SceneManager">
       <UniqueIdentifier>{7465cb68-dee7-443f-9f00-986e6b930777}</UniqueIdentifier>
     </Filter>
@@ -36,6 +30,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObject\Buliding">
       <UniqueIdentifier>{b0d17f54-9a61-4ecc-a487-53320cac1970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster">
+      <UniqueIdentifier>{9d7ca9b5-1caa-4abe-a107-722e07a0fd90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,11 +51,8 @@
     <ClInclude Include="GameObject.h">
       <Filter>소스 파일\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>소스 파일\GameObject\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Monster.h">
-      <Filter>소스 파일\Monster</Filter>
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>소스 파일\SceneManager</Filter>
@@ -86,11 +80,8 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일\GameObject\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Monster.cpp">
-      <Filter>소스 파일\Monster</Filter>
+      <Filter>소스 파일\GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일\SceneManager</Filter>

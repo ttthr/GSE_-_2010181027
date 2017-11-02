@@ -6,11 +6,14 @@ CBullet::CBullet()
 {
 }
 
-CBullet::CBullet(float _PosX, float _PosY)
+CBullet::CBullet(float _PosX, float _PosY, float _DirX, float _DirY, float fAttack)
 {
  	
 	m_Info.x = _PosX;
 	m_Info.y = _PosY;
+	m_fAttack = fAttack;
+	m_xDir = _DirX;
+	m_yDir = _DirY;
 
 }
 
@@ -23,76 +26,28 @@ void CBullet::Initialize(void)
 {
 	m_Info.z = 0;
 	m_Info.size = 5;
-	m_fSpeed = 0.1f;
-	m_fAttack = 1.0f;
-	//m_Info.r = 155;
-	//m_Info.g = 0;
-	//m_Info.b = 0;
-	//m_Info.a = 0;
+	m_fSpeed = 300.f;
+	m_fAttack = 10.f;
+	m_fLife = 3.f;
+   
 }
 
 int CBullet::Update(float _ElapsedTime)
 {
+	m_fLife -= _ElapsedTime;
+
+	//총알 삭제를 위한 조건
+
 	//총알 나가는 방향
-	Dir();
-	//총알 타입
-	Type();
+	Move(_ElapsedTime);
 
-	return 0;
+	return CGameObject::Update(_ElapsedTime);
 
 }
 
-void CBullet::Dir()
+void CBullet::Move(float _ElapsedTime)
 {
-	switch (m_eType)
-	{
-	case DIR_RIGHT:
-		m_Info.x += m_fSpeed;
-		break;
-	case DIR_LEFT:
-		m_Info.x -= m_fSpeed;
-		break;
-	case DIR_UP:
-		m_Info.y += m_fSpeed;
-		break;
-	case DIR_UP_L:
-		m_Info.y -= m_fSpeed;
-		m_Info.x -= m_fSpeed;
-		break;
-	case DIR_UP_R:
-		m_Info.y -= m_fSpeed;
-		m_Info.x += m_fSpeed;
-		break;
-	case DIR_DOWN:
-		m_Info.y -= m_fSpeed;
-		break;
-	case DIR_DOWN_L:
-		m_Info.x += m_fSpeed;
-		m_Info.y += m_fSpeed;
-		break;
-	case DIR_DOWN_R:
-		m_Info.x -= m_fSpeed;
-		m_Info.y += m_fSpeed;
-		break;
-	}
+	m_Info.x += m_fSpeed * m_xDir * _ElapsedTime;
+	m_Info.y += m_fSpeed * m_yDir * _ElapsedTime;
 }
 
-void CBullet::Type()
-{
-	switch (m_eBulletType)
-	{
-	case OBJECT_BULLET:
-		m_Info.r = 255;
-		m_Info.g = 0;
-		m_Info.b = 0;
-		m_Info.a = 255;
-		break;
-	case OBJECT_ARROW:
-		m_Info.r = 0;
-		m_Info.g = 150;
-		m_Info.b = 255;
-		m_Info.a = 255;
-		break;
-
-	}
-}

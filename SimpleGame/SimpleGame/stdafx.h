@@ -35,8 +35,8 @@ typedef struct INFO
 
 enum eDirType
 {
-	DIR_LEFT,
 	DIR_RIGHT,
+	DIR_LEFT,
 	DIR_UP,
 	DIR_UP_L,
 	DIR_UP_R,
@@ -50,12 +50,8 @@ typedef enum
 {
 	OBJECT_BUILDING,
 	OBJECT_CHARACTER,
-	OBJECT_END
-
-}EnumList;
-
-typedef enum
-{
 	OBJECT_BULLET,
 	OBJECT_ARROW,
-}BulletType;
+	OBJECT_END
+
+}OBJECT_TYPE;
