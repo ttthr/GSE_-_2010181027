@@ -14,6 +14,7 @@ protected:
 	float m_fSpeed;
 	float m_fLife;
 	float m_fAttack;
+	float m_fLifeTime = 500;
 public:
 	virtual void  Initialize(void);
 	virtual int   Update(float _ElapsedTime);
@@ -24,5 +25,7 @@ public:
 	void  SetDir(float _xDir, float _yDir);
 	void  DecreaseLife(float _fAttack) { m_fLife -= _fAttack; }
 	float GetAttack() { return m_fAttack; }
+	void  DecreaseLifeTime(float _fLifeTime) { m_fLifeTime -= _fLifeTime; }
+	float GetLifeTime() { return m_fLifeTime; }
 };
 

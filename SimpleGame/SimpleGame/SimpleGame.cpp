@@ -11,7 +11,6 @@ but WITHOUT ANY WARRANTY.
 #include "stdafx.h"
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
-
 #include "Renderer.h"
 #include "SceneManager.h"
 

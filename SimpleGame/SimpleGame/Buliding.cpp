@@ -29,15 +29,15 @@ void CBuliding::Initialize(void)
 
 int CBuliding::Update(float _ElapsedTime)
 {
-
-
+    //3초마다 쏘게
 	m_fBulletShotTime -= _ElapsedTime;
 
 	if (m_fBulletShotTime <= 0)
 	{
-		m_pBulletList->push_back(CreateBullet());
+		for(int i = 0 ; i < 50 ; ++i)
+		     m_pBulletList->push_back(CreateBullet());
 
-		m_fBulletShotTime = 3.f;
+		m_fBulletShotTime = 1.f;
 	}
 	//데드체크
 

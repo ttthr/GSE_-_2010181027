@@ -14,7 +14,6 @@ CSceneManager::CSceneManager()
 
 }
 
-
 CSceneManager::~CSceneManager()
 {
 	ReleaseObject();
@@ -65,9 +64,10 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 
 		for (iter; iter != m_pGameObject[i].end();)
 		{
+			//각각 객체의 업데이트 결과를 담는다.
 			int iResult = (*iter)->Update(_ElapsedTime);
 
-			//리턴 값
+			//리턴 값으로 삭제처리
 			if (iResult & 1)
 			{
 				delete (*iter);
@@ -120,16 +120,16 @@ void CSceneManager::Render()
 {
 	for (int i = 0; i < OBJECT_END; ++i)
 	{
-		if (m_pGameObject[i].empty())
-			continue;
-		list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
-		list<CGameObject*>::iterator iter_end = m_pGameObject[i].end();
+	if (m_pGameObject[i].empty())
+		continue;
+	list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
+	list<CGameObject*>::iterator iter_end = m_pGameObject[i].end();
 
-		for (iter; iter != iter_end; ++iter)
-		{
-			INFO Info = (*iter)->GetInfo();
-			m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
-		}
+	for (iter; iter != iter_end; ++iter)
+	{
+		INFO Info = (*iter)->GetInfo();
+		m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+	}
 	}
 
 }
@@ -210,75 +210,32 @@ void CSceneManager::BulletColl(OBJECT_TYPE _type)
 	}
 }
 
-//void CSceneManager::CollisionMonsterBuliding()
-//{
-//	//빌딩 객체 
-//
-//	if (m_pBuliding != NULL)
-//	{
-//
-//			//몬스터 객체
-//			list<CMonster*>::iterator iterAnother = m_pMonster.begin();
-//			list<CMonster*>::iterator iterAnother_end = m_pMonster.end();
-//
-//			//충돌할 두 객체정보를 받는다.
-//			INFO Monster = (*iterAnother)->GetInfo();
-//
-//			if (CollsionCheck(m_pBuliding->GetInfo().x, m_pBuliding->GetInfo().y, m_pBuliding->GetInfo().size, m_pBuliding->GetInfo().size, Monster.x, Monster.y, Monster.size, Monster.size))
-//			{
-//				//충돌하면 빨간색
-//				(*iterAnother)->SetColor(255, 0, 0, 255);
-//				m_pBuliding->SetColor(255, 0, 0, 255);
-//			}
-//			else
-//			{
-//				//아니면 흰색
-//				(*iterAnother)->SetColor(255, 255, 255, 255);
-//				m_pBuliding->SetColor(255, 255, 0, 255);
-//			}
-//
-//		}
-//
-//
-//
-//}
+void CSceneManager::BulidingMonsterColl()
+{
+	list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_BUILDING].begin();
 
+	for (iter; iter != m_pGameObject[OBJECT_BUILDING].end();)
+	{
+		list<CGameObject*>::iterator iterMonster = m_pGameObject[OBJECT_CHARACTER].begin();
 
-//void CSceneManager::BulidingMonsterColl()
-//{
-//	
-//	
-//		list<CGameObject*>::iterator iter     = m_pMonster.begin();
-//		list<CGameObject*>::iterator iter_end = m_pMonster.end();
-//
-//						
-//		if (!m_pMonster.empty())
-//		{
-//			for (iter; iter != iter_end; ++iter)
-//			{
-//
-//				INFO Monster = (*iter)->GetInfo();
-//
-//			
-//					if (CollsionCheck(m_pBuliding->GetInfo().x, m_pBuliding->GetInfo().y, m_pBuliding->GetInfo().size, m_pBuliding->GetInfo().size, Monster.x, Monster.y, Monster.size, Monster.size))
-//					{
-//						{
-//							m_pBuliding->BulidingLifeDown(((CMonster*)(*iter))->GetMonsterAttack());
-//
-//							if (m_pBuliding->GetLife() <= 0)
-//							{
-//								delete m_pBuliding;
-//								//m_pBuliding = NULL;
-//							}
-//						}
-//					}
-//				
-//			
-//			}
-//
-//		}
-//	}
-//
+		for (iterMonster; iterMonster != m_pGameObject[OBJECT_CHARACTER].end(); ++iterMonster)
+		{
+			INFO Buliding = (*iter)->GetInfo();
+			INFO Monster = (*iterMonster)->GetInfo();
+
+			if (CollsionCheck(Buliding.x, Buliding.y, Buliding.size, Buliding.size, Monster.x, Monster.y, Monster.size, Monster.size))
+			{
+				(*iterMonster)->DecreaseLife((*iter)->GetAttack());
+
+				delete (*iter);
+				iter = m_pGameObject[OBJECT_BUILDING].erase(iter);
+			}
+			else
+				++iter;
+		}
+	}
+}
+
 
 bool CSceneManager::CollsionCheck(float _x, float _y, float _xSize, float _ySize, float _x1, float _y1, float _x1Size, float y1Size)
 {
