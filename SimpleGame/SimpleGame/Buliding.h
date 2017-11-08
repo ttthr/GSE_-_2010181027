@@ -9,7 +9,7 @@ public:
 	CBuliding();
 	virtual ~CBuliding();
 public:
-	virtual void Initialize(void);
+	virtual void  Initialize(void);
 	virtual int   Update(float _ElapsedTime);
 private:
 	list<CGameObject*>* m_pBulletList;

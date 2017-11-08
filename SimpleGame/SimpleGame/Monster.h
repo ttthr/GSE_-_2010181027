@@ -9,7 +9,7 @@ public:
 	virtual ~CMonster();
 public:
 	virtual void Initialize(void);
-	virtual int Update(float _ElapsedTime);
+	virtual int  Update(float _ElapsedTime);
 private:
 	list<CGameObject*>* m_pBulletList;
 	float               m_fBulletShotTime;

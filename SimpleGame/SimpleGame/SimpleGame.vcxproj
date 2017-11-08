@@ -159,6 +159,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="LoadPng.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="LoadPng.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -184,6 +186,10 @@
   <ItemGroup>
     <None Include="Shaders\SolidRect.fs" />
     <None Include="Shaders\SolidRect.vs" />
+    <None Include="Shaders\SolidRectWithTexture.fs" />
+    <None Include="Shaders\SolidRectWithTexture.vs" />
+    <None Include="Shaders\SolidRectWithTextureSeq.fs" />
+    <None Include="Shaders\SolidRectWithTextureSeq.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

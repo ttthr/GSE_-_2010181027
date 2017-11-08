@@ -24,7 +24,7 @@ void CBuliding::Initialize(void)
 
 	m_fLife = 500;
 	m_fBulletShotTime = 3.f;
-
+	m_fAttack = 30.f;
 }
 
 int CBuliding::Update(float _ElapsedTime)
@@ -37,7 +37,7 @@ int CBuliding::Update(float _ElapsedTime)
 		for(int i = 0 ; i < 50 ; ++i)
 		     m_pBulletList->push_back(CreateBullet());
 
-		m_fBulletShotTime = 1.f;
+		m_fBulletShotTime = 3.f;
 	}
 	//데드체크
 

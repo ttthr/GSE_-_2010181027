@@ -10,6 +10,7 @@ CMonster::CMonster()
 
 CMonster::~CMonster()
 {
+
 }
 
 void CMonster::Initialize(void)
@@ -19,12 +20,12 @@ void CMonster::Initialize(void)
 	m_Info.r = 255;
 	m_Info.g = 255;
 	m_Info.b = 255;
-	m_Info.a = 255;
+	m_Info.a = 0.5;
 
 	m_fAttack = 50.f;
 	m_fLife =  20.0f;
 	m_fSpeed = 100.0f;
-	m_fBulletShotTime = 3.f;
+	m_fBulletShotTime = 0.5f;
 
 	// 몬스터들 자동으로 이동 
 	// 랜덤한 방향 설정
@@ -57,7 +58,7 @@ int  CMonster::Update(float _ElapsedTime)
 	if (m_fBulletShotTime <= 0)
 	{
 		m_pBulletList->push_back(CreateBullet());
-		m_fBulletShotTime = 3.f;
+		m_fBulletShotTime = 0.5f;
 	}
 	//데드체크
 	return  CGameObject::Update(_ElapsedTime);

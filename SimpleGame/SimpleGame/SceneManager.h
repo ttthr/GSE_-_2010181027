@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include "Bullet.h"
 #include "Buliding.h"
-
+#include "LoadPng.h"
 
 class CSceneManager
 {
@@ -15,6 +15,7 @@ public:
 private:
 	list<CGameObject*>  m_pGameObject[OBJECT_END];
 	Renderer* m_pRenderer = NULL;
+	GLuint m_TextureBuilding = 0;
 public:
 	void AddActorObject(float _x, float _y , OBJECT_TYPE _type);
 	void ObjectUpdate(float _ElapsedTime);

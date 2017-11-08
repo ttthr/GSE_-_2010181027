@@ -118,25 +118,55 @@ void CSceneManager::ReleaseObject()
 
 void CSceneManager::Render()
 {
-	for (int i = 0; i < OBJECT_END; ++i)
+	//ºôµù ·»´õ
+	for (int i = 0; i <= OBJECT_BUILDING; ++i)
 	{
-	if (m_pGameObject[i].empty())
-		continue;
-	list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
-	list<CGameObject*>::iterator iter_end = m_pGameObject[i].end();
+		list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_BUILDING].begin();
+		list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_BUILDING].end();
 
-	for (iter; iter != iter_end; ++iter)
-	{
-		INFO Info = (*iter)->GetInfo();
-		m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+		{
+			for (iter; iter != iter_end; ++iter)
+			{
+				INFO Info = (*iter)->GetInfo();
+				m_TextureBuilding = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture.png");
+				m_pRenderer->DrawTexturedRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, m_TextureBuilding);
+			
+			}
+		}
 	}
+	//Ä³¸¯ÅÍ ·»´õ
+	for (int i = 0; i < OBJECT_CHARACTER; ++i)
+	{
+		
+		list<CGameObject*>::iterator iter     = m_pGameObject[OBJECT_CHARACTER].begin();
+		list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_CHARACTER].end();
+
+		for (iter; iter != iter_end; ++iter)
+		{
+			INFO Info = (*iter)->GetInfo();
+			m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+
+		}
+	}
+	//ºÒ·¿ ·»´õ
+	for (int i = 0; i < OBJECT_BULLET; ++i)
+	{
+
+		list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_BULLET].begin();
+		list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_BULLET].end();
+
+		for (iter; iter != iter_end; ++iter)
+		{
+			INFO Info = (*iter)->GetInfo();
+			m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+
+		}
 	}
 
 }
 
 void CSceneManager::CollisionObject()
 {
-
 
 	list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_CHARACTER].begin();
 	list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_CHARACTER].end();
@@ -185,7 +215,7 @@ void CSceneManager::BulletColl(OBJECT_TYPE _type)
 	if (m_pGameObject[OBJECT_BULLET].empty() || m_pGameObject[_type].empty())
 		return;
 
-	list<CGameObject*>::iterator iterMonster = m_pGameObject[_type].begin();
+	list<CGameObject*>::iterator iterMonster     = m_pGameObject[_type].begin();
 	list<CGameObject*>::iterator iterMonster_end = m_pGameObject[_type].end();
 
 	for (iterMonster; iterMonster != iterMonster_end; ++iterMonster)
@@ -194,7 +224,7 @@ void CSceneManager::BulletColl(OBJECT_TYPE _type)
 
 		for (iter; iter != m_pGameObject[OBJECT_BULLET].end(); )
 		{
-			INFO Bullet = (*iter)->GetInfo();
+			INFO Bullet  = (*iter)->GetInfo();
 			INFO Monster = (*iterMonster)->GetInfo();
 
 			if (CollsionCheck(Bullet.x, Bullet.y, Bullet.size, Bullet.size, Monster.x, Monster.y, Monster.size, Monster.size))
@@ -212,30 +242,39 @@ void CSceneManager::BulletColl(OBJECT_TYPE _type)
 
 void CSceneManager::BulidingMonsterColl()
 {
+	if (m_pGameObject[OBJECT_BUILDING].empty() || m_pGameObject[OBJECT_CHARACTER].empty())
+		return;
+
 	list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_BUILDING].begin();
 
-	for (iter; iter != m_pGameObject[OBJECT_BUILDING].end();)
+	if (!m_pGameObject[OBJECT_BUILDING].empty())
 	{
-		list<CGameObject*>::iterator iterMonster = m_pGameObject[OBJECT_CHARACTER].begin();
-
-		for (iterMonster; iterMonster != m_pGameObject[OBJECT_CHARACTER].end(); ++iterMonster)
+		for (iter; iter != m_pGameObject[OBJECT_BUILDING].end(); )
 		{
-			INFO Buliding = (*iter)->GetInfo();
-			INFO Monster = (*iterMonster)->GetInfo();
+			list<CGameObject*>::iterator iterMonster = m_pGameObject[OBJECT_CHARACTER].begin();
 
-			if (CollsionCheck(Buliding.x, Buliding.y, Buliding.size, Buliding.size, Monster.x, Monster.y, Monster.size, Monster.size))
+			for (iterMonster; iterMonster != m_pGameObject[OBJECT_CHARACTER].end(); ++iterMonster)
 			{
-				(*iterMonster)->DecreaseLife((*iter)->GetAttack());
+				INFO Buliding = (*iter)->GetInfo();
+				INFO Monster = (*iterMonster)->GetInfo();
 
-				delete (*iter);
-				iter = m_pGameObject[OBJECT_BUILDING].erase(iter);
+				if (CollsionCheck(Buliding.x, Buliding.y, Buliding.size, Buliding.size, Monster.x, Monster.y, Monster.size, Monster.size))
+				{
+					(*iter)->DecreaseLife((*iterMonster)->GetAttack());
+
+					if ((*iter)->GetLife() <= 0)
+					{
+						delete (*iter);
+						iter = m_pGameObject[OBJECT_BUILDING].erase(iter);
+					}
+					else
+						++iter;
+				}
+
 			}
-			else
-				++iter;
 		}
 	}
 }
-
 
 bool CSceneManager::CollsionCheck(float _x, float _y, float _xSize, float _ySize, float _x1, float _y1, float _x1Size, float y1Size)
 {
