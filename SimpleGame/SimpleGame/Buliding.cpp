@@ -24,12 +24,17 @@ void CBuliding::Initialize(void)
 
 	m_fLife = 500;
 	m_fBulletShotTime = 3.f;
-	m_fAttack = 30.f;
+	m_fAttack = 5.f;
 }
 
 int CBuliding::Update(float _ElapsedTime)
 {
-    //3초마다 쏘게
+   
+	//데드체크
+	if (m_bDeadCheck == true)
+		return 1;
+	
+	//3초마다 쏘게
 	m_fBulletShotTime -= _ElapsedTime;
 
 	if (m_fBulletShotTime <= 0)
@@ -39,9 +44,8 @@ int CBuliding::Update(float _ElapsedTime)
 
 		m_fBulletShotTime = 3.f;
 	}
-	//데드체크
 
-	return  CGameObject::Update(_ElapsedTime);
+	return 0;
 	
 }
 

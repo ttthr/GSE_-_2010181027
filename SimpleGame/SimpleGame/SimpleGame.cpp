@@ -37,11 +37,9 @@ void RenderScene(void)
 	m_pSceneManager->Render();
 
 	// 씬 매니저에서 오브젝트들을 충돌시킨다.
-	
-	//m_pSceneManager->CollisionObject();
-	//m_pSceneManager->BulidingMonsterColl();
-	m_pSceneManager->BulletColl(OBJECT_CHARACTER);
-	m_pSceneManager->BulletColl(OBJECT_BUILDING);
+	m_pSceneManager->BulletBulidingColl(OBJECT_BUILDING);
+	m_pSceneManager->BulletMonsetrColl(OBJECT_CHARACTER);
+	m_pSceneManager->BulidingMonsterColl();
 
 	glutSwapBuffers();
 }
@@ -69,6 +67,7 @@ void MouseInput(int button, int state, int x, int y)
 
 				b_LButtonDown = false;
 				m_pSceneManager->AddActorObject(float(x - 250), float(-(y - 250)), OBJECT_CHARACTER);
+				
 			}
 		}
 		break;
@@ -118,13 +117,12 @@ int main(int argc, char **argv)
 	// 씬매니저로 객체 생성 관리 list사용
 	m_pSceneManager = new CSceneManager();
 
-		// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
-	for (int i = 0; i < 50; ++i)
-	{
-		m_pSceneManager->AddActorObject(float(rand() % 500 - 250), float(rand() % 500 - 250), OBJECT_CHARACTER);
-	}
+	// 씬 매니저 이용 gameObject 50개 생성 ( for문 이용 )
 
-	m_pSceneManager->AddActorObject(0,0,OBJECT_BUILDING);
+	m_pSceneManager->AddActorObject(0, 150,OBJECT_BUILDING);
+	m_pSceneManager->AddActorObject(150, 100, OBJECT_BUILDING);
+	m_pSceneManager->AddActorObject(-150, 100, OBJECT_BUILDING);
+	
 
 
 	glutDisplayFunc(RenderScene);

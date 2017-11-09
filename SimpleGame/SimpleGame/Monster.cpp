@@ -22,8 +22,8 @@ void CMonster::Initialize(void)
 	m_Info.b = 255;
 	m_Info.a = 0.5;
 
-	m_fAttack = 50.f;
-	m_fLife =  20.0f;
+	m_fAttack = 5.f;
+	m_fLife =  30.0f;
 	m_fSpeed = 100.0f;
 	m_fBulletShotTime = 0.5f;
 
@@ -50,6 +50,11 @@ void CMonster::Initialize(void)
 
 int  CMonster::Update(float _ElapsedTime)
 {
+	
+	//데드체크
+	if (m_bDeadCheck == true)
+		return 1;
+
 	//몬스터 이동 
 	Move(_ElapsedTime);
 
@@ -60,8 +65,7 @@ int  CMonster::Update(float _ElapsedTime)
 		m_pBulletList->push_back(CreateBullet());
 		m_fBulletShotTime = 0.5f;
 	}
-	//데드체크
-	return  CGameObject::Update(_ElapsedTime);
+	return  0;
 }
 
 void CMonster::SetBullet(list<CGameObject*>* pBulletList)

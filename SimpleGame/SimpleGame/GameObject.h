@@ -14,6 +14,7 @@ protected:
 	float m_fSpeed;
 	float m_fLife;
 	float m_fAttack;
+	bool  m_bDeadCheck;
 public:
 	virtual void  Initialize(void);
 	virtual int   Update(float _ElapsedTime);
@@ -25,5 +26,7 @@ public:
 	void  DecreaseLife(float _fAttack) { m_fLife -= _fAttack; }
 	float GetAttack() { return m_fAttack; }
 	float GetLife() { return m_fLife; }
+	bool GetDeadCheck(void) { return m_bDeadCheck;}
+	void SetDeadCheck(bool _DeadType = true){ m_bDeadCheck = _DeadType; }
 };
 

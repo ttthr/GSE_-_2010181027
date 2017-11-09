@@ -28,20 +28,27 @@ void CBullet::Initialize(void)
 	m_Info.size = 5;
 	m_fSpeed = 300.f;
 	m_fAttack = 10.f;
-	m_fLife = 3.f;
+	m_fLife = 0.7f;
    
 }
 
 int CBullet::Update(float _ElapsedTime)
 {
+	//데드 체크
+	if (m_bDeadCheck == true)
+	{
+		return 1;
+	}
+	//총알 삭제를 위한 조건
 	m_fLife -= _ElapsedTime;
 
-	//총알 삭제를 위한 조건
-
+	if (m_fLife < 0)
+		return 1;
+	
 	//총알 나가는 방향
 	Move(_ElapsedTime);
 
-	return CGameObject::Update(_ElapsedTime);
+	return 0;
 
 }
 

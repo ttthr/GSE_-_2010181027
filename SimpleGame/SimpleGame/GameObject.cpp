@@ -8,6 +8,7 @@ CGameObject::CGameObject()
 
 	m_xDir = 1;
 	m_yDir = 1;
+	m_bDeadCheck = false;
 
 }
 CGameObject::~CGameObject()
@@ -22,9 +23,6 @@ void CGameObject::Initialize(void)
 
 int CGameObject::Update(float _ElapsedTime)
 {
-	// ªË¡¶
-	if (m_fLife <= 0)
-		return 1;
 
 	return 0;
 }
