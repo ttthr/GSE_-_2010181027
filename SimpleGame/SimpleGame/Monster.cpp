@@ -26,6 +26,7 @@ void CMonster::Initialize(void)
 	m_fLife =  30.0f;
 	m_fSpeed = 100.0f;
 	m_fBulletShotTime = 0.5f;
+	m_fLifeTime = 2000.f;
 
 	// 몬스터들 자동으로 이동 
 	// 랜덤한 방향 설정
@@ -53,6 +54,12 @@ int  CMonster::Update(float _ElapsedTime)
 	
 	//데드체크
 	if (m_bDeadCheck == true)
+		return 1;
+
+	//시간 지나면 객체 삭제
+	m_fLifeTime -= _ElapsedTime;
+
+	if (m_fLifeTime < 0)
 		return 1;
 
 	//몬스터 이동 

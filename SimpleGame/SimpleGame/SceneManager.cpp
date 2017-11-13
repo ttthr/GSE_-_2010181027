@@ -65,6 +65,9 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 
 		for (iter; iter != m_pGameObject[i].end();)
 		{
+			//총알과 빌딩의 라이프타임은 2000.f 이고 
+			// 매 프레임 1씩 달게해서 시간이 다되면 return 1타서 삭제
+			(*iter)->DecreaseLifeTime(1.f);
 			//각각 객체의 업데이트 결과를 담는다.
 			int iResult = (*iter)->Update(_ElapsedTime);
 				

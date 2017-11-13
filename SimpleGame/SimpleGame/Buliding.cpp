@@ -25,6 +25,7 @@ void CBuliding::Initialize(void)
 	m_fLife = 500;
 	m_fBulletShotTime = 3.f;
 	m_fAttack = 5.f;
+	m_fLifeTime = 2000.f;
 }
 
 int CBuliding::Update(float _ElapsedTime)
@@ -36,6 +37,12 @@ int CBuliding::Update(float _ElapsedTime)
 	
 	//3초마다 쏘게
 	m_fBulletShotTime -= _ElapsedTime;
+
+	//시간 지나면 객체 삭제
+	m_fLifeTime -= _ElapsedTime;
+
+	if (m_fLifeTime < 0)
+		return 1;
 
 	if (m_fBulletShotTime <= 0)
 	{
