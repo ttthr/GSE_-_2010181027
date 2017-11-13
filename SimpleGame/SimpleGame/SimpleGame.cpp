@@ -37,8 +37,12 @@ void RenderScene(void)
 	m_pSceneManager->Render();
 
 	// 씬 매니저에서 오브젝트들을 충돌시킨다.
-	m_pSceneManager->BulletBulidingColl(OBJECT_BUILDING);
+	//몬스터 불렛과 빌딩 충돌
+	m_pSceneManager->BulletColl(OBJECT_BUILDING);
+    //빌딩 불렛과 몬스터 충돌
 	m_pSceneManager->BulletMonsetrColl(OBJECT_CHARACTER);
+	// 몬스터와 몬스터끼리 불렛충돌
+	m_pSceneManager->BulletColl(OBJECT_CHARACTER);
 	m_pSceneManager->BulidingMonsterColl();
 
 	glutSwapBuffers();

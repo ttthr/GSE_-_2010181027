@@ -273,7 +273,7 @@ void CSceneManager::BulletMonsetrColl(OBJECT_TYPE _type)
 
 }
 
-void CSceneManager::BulletBulidingColl(OBJECT_TYPE _type)
+void CSceneManager::BulletColl(OBJECT_TYPE _type)
 {
 	if (m_pGameObject[OBJECT_BULLET].empty() || m_pGameObject[_type].empty())
 		return;
