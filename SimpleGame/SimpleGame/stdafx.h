@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <time.h>
 
 #include <iostream>
 
@@ -33,25 +34,16 @@ typedef struct INFO
 	float a;
 }INFO;
 
-enum eDirType
-{
-	DIR_RIGHT,
-	DIR_LEFT,
-	DIR_UP,
-	DIR_UP_L,
-	DIR_UP_R,
-	DIR_DOWN,
-	DIR_DOWN_L,
-	DIR_DOWN_R,
-	DIR_END,
-};
-
 typedef enum
 {
-	OBJECT_BUILDING,
-	OBJECT_CHARACTER,
-	OBJECT_BULLET,
-	OBJECT_ARROW,
+	OBJECT_TEAM1,
+	OBJECT_TEAM2,
+	OBJECT_CHARACTER_TEAM1,
+	OBJECT_CHARACTER_TEAM2,
+	OBJECT_BULLET_TEAM1,
+	OBJECT_BULLET_TEAM2,
+	OBJECT_ARROW_TEAM1,
+	OBJECT_ARROW_TEAM2,
 	OBJECT_END
 
 }OBJECT_TYPE;

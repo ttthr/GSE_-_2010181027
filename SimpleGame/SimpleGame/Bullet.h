@@ -10,7 +10,7 @@ class CBullet :
 {
 public:
 	CBullet();
-	CBullet(float _PosX, float _PosY , float _DirX , float _DirY , float fAttack );
+	CBullet(float _PosX, float _PosY , float _DirX , float _DirY , float fAttack , float fSpeed, float fLife);
 	virtual ~CBullet();
 
 	virtual void Initialize(void);
@@ -24,17 +24,29 @@ public:
 
 		switch (m_eBulletType)
 		{
-		case OBJECT_BULLET:
+		case OBJECT_BULLET_TEAM1:
 			m_Info.r = 255;
 			m_Info.g = 0;
 			m_Info.b = 0;
 			m_Info.a = 255;
 			break;
-		case OBJECT_ARROW:
+		case OBJECT_BULLET_TEAM2:
 			m_Info.r = 0;
-			m_Info.g = 150;
+			m_Info.g = 0;
 			m_Info.b = 255;
 			m_Info.a = 255;
+			break;
+		case OBJECT_ARROW_TEAM1:
+			m_Info.r = 1;
+			m_Info.g = 0.2;
+			m_Info.b = 0.7;
+			m_Info.a = 1;
+			break;
+		case OBJECT_ARROW_TEAM2:
+			m_Info.r = 1;
+			m_Info.g = 1;
+			m_Info.b = 0;
+			m_Info.a = 1;
 			break;
 		}
 	}

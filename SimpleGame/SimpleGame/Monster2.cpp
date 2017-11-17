@@ -1,29 +1,27 @@
 #include "stdafx.h"
-#include "Monster.h"
+#include "Monster2.h"
 
 
-CMonster::CMonster()
+CMonster2::CMonster2()
 {
-
 }
 
 
-CMonster::~CMonster()
+CMonster2::~CMonster2()
 {
-
 }
 
-void CMonster::Initialize(void)
+void CMonster2::Initialize(void)
 {
 	m_Info.z = 0;
 	m_Info.size = 20;
-	m_Info.r = 255;
+	m_Info.r = 0;
 	m_Info.g = 0;
-	m_Info.b = 0;
+	m_Info.b = 255;
 	m_Info.a = 255;
 
 	m_fAttack = 5.f;
-	m_fLife =  10.0f;
+	m_fLife = 10.0f;
 	m_fSpeed = 100.0f;
 	m_fBulletShotTime = 1.f;
 	m_fLifeTime = 1000.f;
@@ -46,12 +44,10 @@ void CMonster::Initialize(void)
 		m_xDir = randx;
 		m_yDir = randy;
 	}
-
 }
 
-int  CMonster::Update(float _ElapsedTime)
+int CMonster2::Update(float _ElapsedTime)
 {
-	
 	//데드체크
 	if (m_bDeadCheck == true)
 		return 1;
@@ -75,23 +71,23 @@ int  CMonster::Update(float _ElapsedTime)
 	return  0;
 }
 
-void CMonster::SetBullet(list<CGameObject*>* pBulletList)
+void CMonster2::SetBullet(list<CGameObject*>* pBulletList)
 {
 	m_pBulletList = pBulletList;
 }
 
-CGameObject* CMonster::CreateBullet()
+CGameObject * CMonster2::CreateBullet()
 {
 	float fRadianAngle = float(rand() % 360) / 180 * 3.141592f;
 
-	CGameObject *pBullet = new CBullet(m_Info.x + 20 * -cosf(fRadianAngle), m_Info.y + 20 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle), 10 , 600, 20);
+	CGameObject *pBullet = new CBullet(m_Info.x + 20 * -cosf(fRadianAngle), m_Info.y + 20 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle),10, 600, 20);
 	pBullet->Initialize();
-	dynamic_cast<CBullet*>(pBullet)->SetType(OBJECT_BULLET_TEAM1);
+	dynamic_cast<CBullet*>(pBullet)->SetType(OBJECT_BULLET_TEAM2);
 
 	return pBullet;
 }
 
-void CMonster::Move(float _ElapsedTime)
+void CMonster2::Move(float _ElapsedTime)
 {
 	m_Info.x += m_fSpeed * m_xDir * _ElapsedTime;
 	m_Info.y += m_fSpeed * m_yDir * _ElapsedTime;
@@ -106,8 +102,4 @@ void CMonster::Move(float _ElapsedTime)
 		m_yDir *= -1;
 	else if (m_Info.y <= -400)
 		m_yDir *= -1;
-
 }
-
-
-

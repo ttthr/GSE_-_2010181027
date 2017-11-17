@@ -6,14 +6,16 @@ CBullet::CBullet()
 {
 }
 
-CBullet::CBullet(float _PosX, float _PosY, float _DirX, float _DirY, float fAttack)
+CBullet::CBullet(float _PosX, float _PosY, float _DirX, float _DirY, float fAttack, float fSpeed, float fLife)
 {
  	
 	m_Info.x = _PosX;
 	m_Info.y = _PosY;
-	m_fAttack = fAttack;
 	m_xDir = _DirX;
 	m_yDir = _DirY;
+	m_fAttack = fAttack;
+	m_fSpeed = fSpeed;
+	m_fLife = fLife;
 
 }
 
@@ -26,9 +28,6 @@ void CBullet::Initialize(void)
 {
 	m_Info.z = 0;
 	m_Info.size = 5;
-	m_fSpeed = 300.f;
-	m_fAttack = 10.f;
-	m_fLife = 0.7f;
    
 }
 

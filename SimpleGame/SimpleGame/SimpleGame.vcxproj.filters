@@ -28,17 +28,23 @@
     <Filter Include="소스 파일\GameObject\Bullet">
       <UniqueIdentifier>{ef8a601e-a1e2-405b-9c65-5645fe4ed3f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObject\Buliding">
-      <UniqueIdentifier>{b0d17f54-9a61-4ecc-a487-53320cac1970}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\GameObject\Monster">
-      <UniqueIdentifier>{9d7ca9b5-1caa-4abe-a107-722e07a0fd90}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\LoadPng">
       <UniqueIdentifier>{136cda6e-c07f-47d3-9b83-3370f3021933}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\Renderer">
       <UniqueIdentifier>{9cb8dc81-b174-4cec-b23d-803671c3eb29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Buliding%28TEAM1%29">
+      <UniqueIdentifier>{b0d17f54-9a61-4ecc-a487-53320cac1970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Buliding%28TEAM2%29">
+      <UniqueIdentifier>{710edab3-d9d9-439c-863b-8283a06dfa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster%28TEAM1%29">
+      <UniqueIdentifier>{9d7ca9b5-1caa-4abe-a107-722e07a0fd90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObject\Monster%28TEAM2%29">
+      <UniqueIdentifier>{fb2b0a4b-230c-4f64-968c-769ee2a69bc7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +61,7 @@
       <Filter>소스 파일\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
-      <Filter>소스 파일\GameObject\Monster</Filter>
+      <Filter>소스 파일\GameObject\Monster%28TEAM1%29</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>소스 파일\SceneManager</Filter>
@@ -67,13 +73,19 @@
       <Filter>소스 파일\GameObject\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Buliding.h">
-      <Filter>소스 파일\GameObject\Buliding</Filter>
+      <Filter>소스 파일\GameObject\Buliding%28TEAM1%29</Filter>
     </ClInclude>
     <ClInclude Include="LoadPng.h">
       <Filter>소스 파일\LoadPng</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>소스 파일\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Buliding2.h">
+      <Filter>소스 파일\GameObject\Buliding%28TEAM2%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster2.h">
+      <Filter>소스 파일\GameObject\Monster%28TEAM2%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +99,7 @@
       <Filter>소스 파일\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
-      <Filter>소스 파일\GameObject\Monster</Filter>
+      <Filter>소스 파일\GameObject\Monster%28TEAM1%29</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>소스 파일\SceneManager</Filter>
@@ -99,13 +111,19 @@
       <Filter>소스 파일\GameObject\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Buliding.cpp">
-      <Filter>소스 파일\GameObject\Buliding</Filter>
+      <Filter>소스 파일\GameObject\Buliding%28TEAM1%29</Filter>
     </ClCompile>
     <ClCompile Include="LoadPng.cpp">
       <Filter>소스 파일\LoadPng</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>소스 파일\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Buliding2.cpp">
+      <Filter>소스 파일\GameObject\Buliding%28TEAM2%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster2.cpp">
+      <Filter>소스 파일\GameObject\Monster%28TEAM2%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,6 @@ void CGameObject::Initialize(void)
 
 int CGameObject::Update(float _ElapsedTime)
 {
-
 	return 0;
 }
 

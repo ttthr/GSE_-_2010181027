@@ -156,11 +156,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buliding.h" />
+    <ClInclude Include="Buliding2.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="LoadPng.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Monster2.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="stdafx.h" />
@@ -168,11 +170,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Buliding.cpp" />
+    <ClCompile Include="Buliding2.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="LoadPng.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Monster2.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SimpleGame.cpp" />
