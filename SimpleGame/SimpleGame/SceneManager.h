@@ -17,9 +17,10 @@ public:
 private:
 	list<CGameObject*>  m_pGameObject[OBJECT_END];
 	Renderer* m_pRenderer = NULL;
-	GLuint m_TextureBuilding = 0;
+	GLuint m_TextureBuilding  = 0;
+	GLuint m_TextureBuilding2 = 1;
 public:
-	void AddActorObject(float _x, float _y , OBJECT_TYPE _type );
+	void AddActorObject(float _x, float _y, OBJECT_TYPE _type);
 	void ObjectUpdate(float _ElapsedTime);
 	void ReleaseObject();
 	void Render();

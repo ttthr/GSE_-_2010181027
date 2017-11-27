@@ -45,6 +45,7 @@ void CGameObject::SetPos(float _fx, float _fy)
 	m_Info.y = _fy;
 }
 
+
 void CGameObject::SetDir(float _xDir, float _yDir)
 {
 	m_xDir = _xDir;

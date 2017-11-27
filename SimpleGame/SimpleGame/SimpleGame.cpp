@@ -26,6 +26,23 @@ void RenderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+	// 씬 매니저에서 오브젝트들을 충돌시킨다
+	//빌딩 불렛과 몬스터 충돌
+	m_pSceneManager->BulletColl(OBJECT_ARROW_TEAM2, OBJECT_CHARACTER_TEAM1);
+	m_pSceneManager->BulletColl(OBJECT_ARROW_TEAM1, OBJECT_CHARACTER_TEAM2);
+
+	//몬스테 불렛과 빌딩 충돌
+	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM2, OBJECT_TEAM1);
+	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM1, OBJECT_TEAM2);
+
+	//TEAM1 몬스터와 TEAM2 몬스터 총알충돌
+	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM2, OBJECT_CHARACTER_TEAM1);
+	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM1, OBJECT_CHARACTER_TEAM2);
+
+	//빌딩과 몬스터 충돌
+	m_pSceneManager->BulidingMonsterColl(OBJECT_TEAM2, OBJECT_CHARACTER_TEAM1);
+	m_pSceneManager->BulidingMonsterColl(OBJECT_TEAM1, OBJECT_CHARACTER_TEAM2);
+
 	//실제 시간으로 계산하기
 	float ElapsedTime = float(timeGetTime() - d_StratTime) / 1000.f;
 	d_StratTime = timeGetTime();
@@ -43,41 +60,25 @@ void RenderScene(void)
 	m_pSceneManager->Render();
 
 	//벽 랜더
-	m_pSceneManager->GetRenderer()->DrawSolidRect(0, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(30, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(60, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(90, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(120, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(150, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(180, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(210, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(240, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(0, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-30, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-60, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-90, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-120, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-150, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-180, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-210, 0, 0, 10, 255, 255, 255, 255);
-	m_pSceneManager->GetRenderer()->DrawSolidRect(-240, 0, 0, 10, 255, 255, 255, 255);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(0, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(30, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(60, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(90, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(120, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(150, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(180, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(210, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(240, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(0, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-30, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-60, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-90, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-120, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-150, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-180, 0, 0, 10, 255, 255, 255, 255 , 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-210, 0, 0, 10, 255, 255, 255, 255, 0.1);
+	m_pSceneManager->GetRenderer()->DrawSolidRect(-240, 0, 0, 10, 255, 255, 255, 255, 0.1);
 
-	// 씬 매니저에서 오브젝트들을 충돌시킨다
-    //빌딩 불렛과 몬스터 충돌
-	m_pSceneManager->BulletColl(OBJECT_ARROW_TEAM2 , OBJECT_CHARACTER_TEAM1);
-	m_pSceneManager->BulletColl(OBJECT_ARROW_TEAM1 , OBJECT_CHARACTER_TEAM2);
-
-	//몬스테 불렛과 빌딩 충돌
-	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM2, OBJECT_TEAM1);
-	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM1, OBJECT_TEAM2);
-
-	//TEAM1 몬스터와 TEAM2 몬스터 총알충돌
-	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM2, OBJECT_CHARACTER_TEAM1);
-	m_pSceneManager->BulletColl(OBJECT_BULLET_TEAM1, OBJECT_CHARACTER_TEAM2);
-
-	//빌딩과 몬스터 충돌
-	m_pSceneManager->BulidingMonsterColl(OBJECT_TEAM2, OBJECT_CHARACTER_TEAM1);
-	m_pSceneManager->BulidingMonsterColl(OBJECT_TEAM1, OBJECT_CHARACTER_TEAM2);
 
 	glutSwapBuffers();
 }
@@ -107,7 +108,7 @@ void MouseInput(int button, int state, int x, int y)
 
 				if (400 - y < 0)	// 남쪽진영이면 탈출 
 				{
-					if (m_fTeam2CreateTime < 0)
+					if (m_fTeam2CreateTime <= 0)
 					{
 						m_pSceneManager->AddActorObject(float(x - 250), float(-(y - 400)), OBJECT_CHARACTER_TEAM2);
 						m_fTeam2CreateTime = 2.f; //2초마다 생성하게
@@ -118,7 +119,7 @@ void MouseInput(int button, int state, int x, int y)
 
 				else if (400 - y > 0)	// 북쪽진영이면 탈출 
 				{
-					if (m_fTeam1CreateTime < 0)
+					if (m_fTeam1CreateTime <= 0)
 					{
 						m_pSceneManager->AddActorObject(float(x - 250), float(-(y - 400)), OBJECT_CHARACTER_TEAM1);
 						m_fTeam1CreateTime = 1.f; //1초마다 생성하게

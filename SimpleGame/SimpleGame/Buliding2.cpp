@@ -17,15 +17,16 @@ void CBuliding2::Initialize(void)
 	m_Info.y = 0;
 	m_Info.z = 0;
 	m_Info.size = 80;
-	m_Info.r = 255;
-	m_Info.g = 255;
-	m_Info.b = 0;
-	m_Info.a = 255;
+	m_Info.r = 1;
+	m_Info.g = 1;
+	m_Info.b = 1;
+	m_Info.a = 1;
 
-	m_fLife = 500;
+	m_fLife = 500.f;
+	m_fMaxLife = 500.f;
 	m_fBulletShotTime = 1.f;
-	m_fAttack = 30.f;
-	m_fLifeTime = 1000.f;
+	m_fAttack = 1.f;
+	m_fLifeTime = 10000.f;
 }
 
 int CBuliding2::Update(float _ElapsedTime)

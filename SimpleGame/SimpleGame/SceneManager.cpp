@@ -11,7 +11,8 @@ CSceneManager::CSceneManager()
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
-
+	m_TextureBuilding = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture.png");
+	m_TextureBuilding2 = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture2.png");
 }
 
 CSceneManager::~CSceneManager()
@@ -73,9 +74,9 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 
 		for (iter; iter != m_pGameObject[i].end();)
 		{
-			//총알과 빌딩의 라이프타임은 1000.f 이고 
-			// 매 프레임 1씩 달게해서 시간이 다되면 return 1타서 삭제
-			(*iter)->DecreaseLifeTime(1.f);
+			//총알과 빌딩의 라이프타임은 10000.f 이고 
+			// 매 프레임 0.1씩 달게해서 시간이 다되면 return 1타서 삭제
+			(*iter)->DecreaseLifeTime(0.1f);
 			//각각 객체의 업데이트 결과를 담는다.
 			int iResult = (*iter)->Update(_ElapsedTime);
 
@@ -136,41 +137,8 @@ void CSceneManager::ReleaseObject()
 
 void CSceneManager::Render()
 {
-	//빌딩(TEAM1)
-	for (int i = 0; i <= OBJECT_TEAM1; ++i)
-	{
-		list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_TEAM1].begin();
-		list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_TEAM1].end();
 
-		{
-			for (iter; iter != iter_end; ++iter)
-			{
-				INFO Info = (*iter)->GetInfo();
-				m_TextureBuilding = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture.png");
-				m_pRenderer->DrawTexturedRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, m_TextureBuilding);
-
-			}
-		}
-	}
-	//빌딩(TEAM2)
-	for (int i = 0; i <= OBJECT_TEAM2; ++i)
-	{
-		list<CGameObject*>::iterator iter = m_pGameObject[OBJECT_TEAM2].begin();
-		list<CGameObject*>::iterator iter_end = m_pGameObject[OBJECT_TEAM2].end();
-
-		{
-			for (iter; iter != iter_end; ++iter)
-			{
-				INFO Info = (*iter)->GetInfo();
-				m_TextureBuilding = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture2.png");
-				m_pRenderer->DrawTexturedRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, m_TextureBuilding);
-
-			}
-		}
-	}
-
-	// 캐릭터(TEAM1 ~ OBJECT_END까지 랜더)
-	for (int i = OBJECT_CHARACTER_TEAM1; i < OBJECT_END; ++i)
+	for (int i = 0; i < OBJECT_END; ++i)
 	{
 		list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
 		list<CGameObject*>::iterator iter_end = m_pGameObject[i].end();
@@ -178,7 +146,47 @@ void CSceneManager::Render()
 		for (iter; iter != iter_end; ++iter)
 		{
 			INFO Info = (*iter)->GetInfo();
-			m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a);
+
+			if (i == OBJECT_TEAM1)
+			{
+				m_pRenderer->DrawTexturedRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, m_TextureBuilding, 0.1);
+				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
+				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
+				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
+			}
+			else if (i == OBJECT_TEAM2)
+			{
+				m_pRenderer->DrawTexturedRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, m_TextureBuilding2, 0.1);
+				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 0, 0, 255, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
+			}
+			else if (i == OBJECT_CHARACTER_TEAM1)
+			{
+				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.2);
+				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
+			}
+			else if (i == OBJECT_CHARACTER_TEAM2)
+			{
+				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.2);
+				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
+			}
+			else if (i == OBJECT_ARROW_TEAM1)
+			{
+				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+			}
+			else if (i == OBJECT_ARROW_TEAM2)
+			{
+				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+			}
+			else if (i == OBJECT_BULLET_TEAM1)
+			{
+				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+			}
+			else if (i == OBJECT_BULLET_TEAM2)
+			{
+				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+			}
+
+
 		}
 	}
 
@@ -247,11 +255,13 @@ void CSceneManager::BulletColl(OBJECT_TYPE _BulletType, OBJECT_TYPE _TargetType)
 			INFO Bullet = (*iter)->GetInfo();
 			INFO Target = (*iterTarget)->GetInfo();
 
+			
+
 			if (CollsionCheck(Bullet.x, Bullet.y, Bullet.size, Bullet.size, Target.x, Target.y, Target.size, Target.size))
 			{
 
 				(*iterTarget)->DecreaseLife((*iter)->GetAttack());
-
+				
 				(*iter)->SetDeadCheck();
 
 				if ((*iterTarget)->GetLife() <= 0)
@@ -282,7 +292,7 @@ void CSceneManager::BulidingMonsterColl(OBJECT_TYPE _BulidingType, OBJECT_TYPE _
 		for (iter; iter != m_pGameObject[_BulidingType].end(); ++iter)
 		{
 			INFO Buliding = (*iter)->GetInfo();
-			INFO Monster = (*iterMonster)->GetInfo();
+			INFO Monster  = (*iterMonster)->GetInfo();
 
 			if (!m_pGameObject[_BulidingType].empty())
 			{
@@ -290,7 +300,7 @@ void CSceneManager::BulidingMonsterColl(OBJECT_TYPE _BulidingType, OBJECT_TYPE _
 				{
 					(*iter)->DecreaseLife((*iterMonster)->GetAttack());
 					(*iterMonster)->DecreaseLife((*iter)->GetAttack());
-
+				
 					if ((*iter)->GetLife() <= 0)
 					{
 						(*iter)->SetDeadCheck();

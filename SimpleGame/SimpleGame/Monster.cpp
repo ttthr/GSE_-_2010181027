@@ -23,10 +23,11 @@ void CMonster::Initialize(void)
 	m_Info.a = 255;
 
 	m_fAttack = 5.f;
-	m_fLife =  10.0f;
+	m_fLife =  30.0f;
+	m_fMaxLife = 30.f;
 	m_fSpeed = 100.0f;
 	m_fBulletShotTime = 1.f;
-	m_fLifeTime = 1000.f;
+	m_fLifeTime = 10000.f;
 
 	// 몬스터들 자동으로 이동 
 	// 랜덤한 방향 설정
@@ -84,7 +85,7 @@ CGameObject* CMonster::CreateBullet()
 {
 	float fRadianAngle = float(rand() % 360) / 180 * 3.141592f;
 
-	CGameObject *pBullet = new CBullet(m_Info.x + 20 * -cosf(fRadianAngle), m_Info.y + 20 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle), 10 , 600, 20);
+	CGameObject *pBullet = new CBullet(m_Info.x + 20 * -cosf(fRadianAngle), m_Info.y + 20 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle), 10 , 600, 15);
 	pBullet->Initialize();
 	dynamic_cast<CBullet*>(pBullet)->SetType(OBJECT_BULLET_TEAM1);
 
