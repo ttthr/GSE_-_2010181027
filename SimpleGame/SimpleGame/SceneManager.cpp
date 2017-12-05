@@ -13,6 +13,10 @@ CSceneManager::CSceneManager()
 	}
 	m_TextureBuilding = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture.png");
 	m_TextureBuilding2 = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture2.png");
+	m_TextureBackGround = m_pRenderer->CreatePngTexture("../../Resource/backGround.png");
+	m_CharaterTexture = m_pRenderer->CreatePngTexture("../../Resource/Char1.png");
+	m_Charater1Texture = m_pRenderer->CreatePngTexture("../../Resource/Char2.png");
+	m_Particle = m_pRenderer->CreatePngTexture("../../Resource/Particle.png");
 }
 
 CSceneManager::~CSceneManager()
@@ -94,6 +98,18 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 		}
 
 	}
+	//프레임
+	m_fFrameTime += _ElapsedTime;
+
+	//캐릭터 애니메이션 
+	m_frameX += _ElapsedTime * 30.f;
+	//프레임이 맥스프레임넘어서면 다시 0번째 부터
+	if (m_frameX > m_frameMaxCountCharater1)
+		m_frameX = 0;
+	//프레임이 맥스프레임넘어서면 다시 0번째 부터
+	if (m_frameX > m_frameMaxCountCharater2)
+		m_frameX = 0;
+
 }
 
 
@@ -137,7 +153,11 @@ void CSceneManager::ReleaseObject()
 
 void CSceneManager::Render()
 {
+	//백그라운드 랜더	
+	m_pRenderer->DrawTexturedRect(0.f, 0.f, 0.f, 800, 1, 1, 1, 1, m_TextureBackGround, 0.4);
 
+
+	//오브젝트 처음부터 엔드까지 이터레이터
 	for (int i = 0; i < OBJECT_END; ++i)
 	{
 		list<CGameObject*>::iterator iter = m_pGameObject[i].begin();
@@ -153,6 +173,7 @@ void CSceneManager::Render()
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
+
 			}
 			else if (i == OBJECT_TEAM2)
 			{
@@ -161,17 +182,20 @@ void CSceneManager::Render()
 			}
 			else if (i == OBJECT_CHARACTER_TEAM1)
 			{
-				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.2);
+				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+				m_pRenderer->DrawTexturedRectSeq(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, m_CharaterTexture, m_frameX, m_frameY, m_frameMaxCountCharater1, 1, 0.2);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
 			}
 			else if (i == OBJECT_CHARACTER_TEAM2)
 			{
-				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.2);
+				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+				m_pRenderer->DrawTexturedRectSeq(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, m_Charater1Texture, m_frameX, m_frameY, m_frameMaxCountCharater2, 1, 0.2);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
 			}
 			else if (i == OBJECT_ARROW_TEAM1)
 			{
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+				
 			}
 			else if (i == OBJECT_ARROW_TEAM2)
 			{
@@ -179,13 +203,14 @@ void CSceneManager::Render()
 			}
 			else if (i == OBJECT_BULLET_TEAM1)
 			{
+				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, 1, m_Particle, m_fFrameTime);
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 			}
 			else if (i == OBJECT_BULLET_TEAM2)
 			{
+				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, -1, m_Particle, m_fFrameTime);
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 			}
-
 
 		}
 	}

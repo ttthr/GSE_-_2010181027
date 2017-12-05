@@ -14,7 +14,7 @@ CMonster2::~CMonster2()
 void CMonster2::Initialize(void)
 {
 	m_Info.z = 0;
-	m_Info.size = 20;
+	m_Info.size = 60;
 	m_Info.r = 0;
 	m_Info.g = 0;
 	m_Info.b = 255;
@@ -81,7 +81,7 @@ CGameObject * CMonster2::CreateBullet()
 {
 	float fRadianAngle = float(rand() % 360) / 180 * 3.141592f;
 
-	CGameObject *pBullet = new CBullet(m_Info.x + 20 * -cosf(fRadianAngle), m_Info.y + 20 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle),10, 600, 15);
+	CGameObject *pBullet = new CBullet(m_Info.x + 60 * -cosf(fRadianAngle), m_Info.y + 60 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle),10, 600, 15);
 	pBullet->Initialize();
 	dynamic_cast<CBullet*>(pBullet)->SetType(OBJECT_BULLET_TEAM2);
 

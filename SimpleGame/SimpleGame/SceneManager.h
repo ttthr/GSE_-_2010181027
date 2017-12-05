@@ -19,6 +19,15 @@ private:
 	Renderer* m_pRenderer = NULL;
 	GLuint m_TextureBuilding  = 0;
 	GLuint m_TextureBuilding2 = 1;
+	GLuint m_TextureBackGround = 2;
+	GLuint m_CharaterTexture = 3;
+	GLuint m_Charater1Texture = 4;
+	GLuint m_Particle = 5;
+	float  m_frameX = 0; 
+	float  m_frameY = 0;
+	float  m_frameMaxCountCharater1 = 17;
+	float  m_frameMaxCountCharater2 = 8;
+	float  m_fFrameTime = 0;
 public:
 	void AddActorObject(float _x, float _y, OBJECT_TYPE _type);
 	void ObjectUpdate(float _ElapsedTime);
