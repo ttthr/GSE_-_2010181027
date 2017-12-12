@@ -46,6 +46,9 @@
     <Filter Include="소스 파일\GameObject\Monster%28TEAM2%29">
       <UniqueIdentifier>{fb2b0a4b-230c-4f64-968c-769ee2a69bc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Sound">
+      <UniqueIdentifier>{52cb6aaf-27b0-41bf-97d5-f039814de304}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -87,6 +90,9 @@
     <ClInclude Include="Monster2.h">
       <Filter>소스 파일\GameObject\Monster%28TEAM2%29</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>소스 파일\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="Monster2.cpp">
       <Filter>소스 파일\GameObject\Monster%28TEAM2%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>소스 파일\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

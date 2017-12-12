@@ -165,6 +165,7 @@
     <ClInclude Include="Monster2.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -180,6 +181,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SimpleGame.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

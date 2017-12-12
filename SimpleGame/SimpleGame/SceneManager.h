@@ -7,6 +7,7 @@
 #include "LoadPng.h"
 #include "Buliding2.h"
 #include "Monster2.h"
+#include "Sound.h"
 
 class CSceneManager
 {
@@ -28,6 +29,10 @@ private:
 	float  m_frameMaxCountCharater1 = 17;
 	float  m_frameMaxCountCharater2 = 8;
 	float  m_fFrameTime = 0;
+	//»ç¿îµå
+	Sound* m_pSound = NULL;
+	int SoundBGM = 0;
+	int EffectSound = 1;
 public:
 	void AddActorObject(float _x, float _y, OBJECT_TYPE _type);
 	void ObjectUpdate(float _ElapsedTime);

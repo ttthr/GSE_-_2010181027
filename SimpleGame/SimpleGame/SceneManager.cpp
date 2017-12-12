@@ -17,12 +17,18 @@ CSceneManager::CSceneManager()
 	m_CharaterTexture = m_pRenderer->CreatePngTexture("../../Resource/Char1.png");
 	m_Charater1Texture = m_pRenderer->CreatePngTexture("../../Resource/Char2.png");
 	m_Particle = m_pRenderer->CreatePngTexture("../../Resource/Particle.png");
+
+	m_pSound = new Sound;
+
+	SoundBGM = m_pSound->CreateSound("./Dependencies/SoundSamples/Logo.wav");
+	//EffectSound = m_pSound->CreateSound("./Dependencies/SoundSamples/explosion.XM");
+	m_pSound->PlaySound(SoundBGM, true, 0.2f);
+
 }
 
 CSceneManager::~CSceneManager()
 {
 	ReleaseObject();
-
 	if (m_pRenderer)
 	{
 		delete m_pRenderer;
@@ -173,18 +179,20 @@ void CSceneManager::Render()
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 255, 0, 0, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
-
+				m_pRenderer->DrawTextW(Info.x - 20 , Info.y + 70, GLUT_BITMAP_TIMES_ROMAN_10, 255, 0, 0, "TEAM1");
 			}
 			else if (i == OBJECT_TEAM2)
 			{
 				m_pRenderer->DrawTexturedRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, m_TextureBuilding2, 0.1);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 50, Info.z, 80, 10, 0, 0, 255, 255, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.1);
+				m_pRenderer->DrawTextW(Info.x - 20, Info.y + 70, GLUT_BITMAP_TIMES_ROMAN_10, 0, 255, 0, "TEAM2");
 			}
 			else if (i == OBJECT_CHARACTER_TEAM1)
 			{
 				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 				m_pRenderer->DrawTexturedRectSeq(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, m_CharaterTexture, m_frameX, m_frameY, m_frameMaxCountCharater1, 1, 0.2);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
+				//m_pRenderer->DrawTextW(Info.x -20, Info.y + 30, GLUT_BITMAP_TIMES_ROMAN_10, 255, 0, 255, "Charater1");
 			}
 			else if (i == OBJECT_CHARACTER_TEAM2)
 			{
@@ -280,13 +288,11 @@ void CSceneManager::BulletColl(OBJECT_TYPE _BulletType, OBJECT_TYPE _TargetType)
 			INFO Bullet = (*iter)->GetInfo();
 			INFO Target = (*iterTarget)->GetInfo();
 
-			
-
 			if (CollsionCheck(Bullet.x, Bullet.y, Bullet.size, Bullet.size, Target.x, Target.y, Target.size, Target.size))
 			{
 
 				(*iterTarget)->DecreaseLife((*iter)->GetAttack());
-				
+
 				(*iter)->SetDeadCheck();
 
 				if ((*iterTarget)->GetLife() <= 0)
@@ -305,7 +311,6 @@ void CSceneManager::BulidingMonsterColl(OBJECT_TYPE _BulidingType, OBJECT_TYPE _
 {
 	if (m_pGameObject[_MonsterType].empty())
 		return;
-
 
 	list<CGameObject*>::iterator iterMonster = m_pGameObject[_MonsterType].begin();
 	list<CGameObject*>::iterator iterMonster_end = m_pGameObject[_MonsterType].end();
