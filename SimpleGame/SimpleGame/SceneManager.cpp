@@ -104,8 +104,10 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 		}
 
 	}
-	//프레임
-	m_fFrameTime += _ElapsedTime;
+	//비 프레임
+	m_fClimateFrameTime += _ElapsedTime;
+	//불렛 프레임
+	m_fBulletFrameTime += _ElapsedTime;
 
 	//캐릭터 애니메이션 
 	m_frameX += _ElapsedTime * 30.f;
@@ -115,6 +117,11 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 	//프레임이 맥스프레임넘어서면 다시 0번째 부터
 	if (m_frameX > m_frameMaxCountCharater2)
 		m_frameX = 0;
+
+	//if (m_fClimateFrameTime >= 3)
+	//	m_fClimateFrameTime = 0;
+
+
 
 }
 
@@ -162,6 +169,8 @@ void CSceneManager::Render()
 	//백그라운드 랜더	
 	m_pRenderer->DrawTexturedRect(0.f, 0.f, 0.f, 800, 1, 1, 1, 1, m_TextureBackGround, 0.4);
 
+	//비 랜더
+	m_pRenderer->DrawParticleClimate(0, 0, 0, 1, 1, 1, 1, 1, -0.1, -0.1, m_Particle, m_fClimateFrameTime, 0.01);
 
 	//오브젝트 처음부터 엔드까지 이터레이터
 	for (int i = 0; i < OBJECT_END; ++i)
@@ -199,24 +208,30 @@ void CSceneManager::Render()
 				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 				m_pRenderer->DrawTexturedRectSeq(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, m_Charater1Texture, m_frameX, m_frameY, m_frameMaxCountCharater2, 1, 0.2);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
+
 			}
 			else if (i == OBJECT_ARROW_TEAM1)
 			{
+
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 				
 			}
 			else if (i == OBJECT_ARROW_TEAM2)
 			{
-				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+				float fRadianAngle = float(rand() % 360) / 180 * 3.141592;
+
+				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 0.75, 0.2, -1, m_Particle, m_fBulletFrameTime, 0.31);
+				
 			}
 			else if (i == OBJECT_BULLET_TEAM1)
 			{
-				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, 1, m_Particle, m_fFrameTime);
+				//m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, 1, m_Particle, m_fFrameTime);
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 			}
 			else if (i == OBJECT_BULLET_TEAM2)
 			{
-				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, -1, m_Particle, m_fFrameTime);
+				//m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, -1, m_Particle, m_fFrameTime, 0.31 );
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 			}
 

@@ -28,7 +28,8 @@ private:
 	float  m_frameY = 0;
 	float  m_frameMaxCountCharater1 = 17;
 	float  m_frameMaxCountCharater2 = 8;
-	float  m_fFrameTime = 0;
+	float  m_fClimateFrameTime = 0;
+	float  m_fBulletFrameTime = 0;
 	//»ç¿îµå
 	Sound* m_pSound = NULL;
 	int SoundBGM = 0;
