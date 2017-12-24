@@ -26,6 +26,10 @@ void RenderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+	//실제 시간으로 계산하기
+	float ElapsedTime = float(timeGetTime() - d_StratTime) / 1000.f;
+	d_StratTime = timeGetTime();
+
 	// 씬 매니저에서 오브젝트들을 충돌시킨다
 	//빌딩 불렛과 몬스터 충돌
 	m_pSceneManager->BulletColl(OBJECT_ARROW_TEAM2, OBJECT_CHARACTER_TEAM1);
@@ -43,9 +47,8 @@ void RenderScene(void)
 	m_pSceneManager->BulidingMonsterColl(OBJECT_TEAM2, OBJECT_CHARACTER_TEAM1);
 	m_pSceneManager->BulidingMonsterColl(OBJECT_TEAM1, OBJECT_CHARACTER_TEAM2);
 
-	//실제 시간으로 계산하기
-	float ElapsedTime = float(timeGetTime() - d_StratTime) / 1000.f;
-	d_StratTime = timeGetTime();
+	m_pSceneManager->MonsterTeam1AI(ElapsedTime);
+	
 
 	//CreateTime
 	m_fTeam1CreateTime -= ElapsedTime;

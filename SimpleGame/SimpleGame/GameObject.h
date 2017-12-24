@@ -32,5 +32,7 @@ public:
 	bool  GetDeadCheck(void) { return m_bDeadCheck;}
 	void  SetDeadCheck(bool _DeadType = true){ m_bDeadCheck = _DeadType; }
 	void  DecreaseLifeTime(float _fTime) { m_fLifeTime -= _fTime; }
+	float  GetDirX() { return m_xDir; }
+	float  GetDirY() { return m_yDir; }
 };
 

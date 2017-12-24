@@ -48,7 +48,10 @@ public:
 public:
 	//가운데 경계선을 그려주기 위해 렌더러를 갯한다
 	Renderer* GetRenderer() { return m_pRenderer; }
-
+public:
+	void MonsterTeam1AI(float fTime);
+	float m_fAngle = 0.f;
+	float m_Dir = 1.f;
 
 };
 

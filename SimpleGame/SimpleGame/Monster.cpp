@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Monster.h"
 
-
 CMonster::CMonster()
 {
 
@@ -88,14 +87,15 @@ CGameObject* CMonster::CreateBullet()
 	CGameObject *pBullet = new CBullet(m_Info.x + 60 * -cosf(fRadianAngle), m_Info.y + 60 * sinf(fRadianAngle), -cosf(fRadianAngle), sinf(fRadianAngle), 10 , 600, 15);
 	pBullet->Initialize();
 	dynamic_cast<CBullet*>(pBullet)->SetType(OBJECT_BULLET_TEAM1);
-
+	
 	return pBullet;
 }
 
 void CMonster::Move(float _ElapsedTime)
 {
-	m_Info.x += m_fSpeed * m_xDir * _ElapsedTime;
-	m_Info.y += m_fSpeed * m_yDir * _ElapsedTime;
+	m_Info.x -= m_fSpeed * m_xDir * _ElapsedTime;
+	m_Info.y -= m_fSpeed * m_yDir * _ElapsedTime;
+
 
 	if (m_Info.x > 250)
 		m_xDir *= -1;
@@ -107,7 +107,7 @@ void CMonster::Move(float _ElapsedTime)
 		m_yDir *= -1;
 	else if (m_Info.y <= -400)
 		m_yDir *= -1;
-
+	
 }
 
 

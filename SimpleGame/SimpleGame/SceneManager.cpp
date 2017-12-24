@@ -13,7 +13,7 @@ CSceneManager::CSceneManager()
 	}
 	m_TextureBuilding = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture.png");
 	m_TextureBuilding2 = m_pRenderer->CreatePngTexture("../../Resource/BuildingTexture2.png");
-	m_TextureBackGround = m_pRenderer->CreatePngTexture("../../Resource/backGround.png");
+	m_TextureBackGround = m_pRenderer->CreatePngTexture("../../Resource/backGround1.png");
 	m_CharaterTexture = m_pRenderer->CreatePngTexture("../../Resource/Char1.png");
 	m_Charater1Texture = m_pRenderer->CreatePngTexture("../../Resource/Char2.png");
 	m_Particle = m_pRenderer->CreatePngTexture("../../Resource/Particle.png");
@@ -21,7 +21,7 @@ CSceneManager::CSceneManager()
 	m_pSound = new Sound;
 
 	SoundBGM = m_pSound->CreateSound("./Dependencies/SoundSamples/Logo.wav");
-	//EffectSound = m_pSound->CreateSound("./Dependencies/SoundSamples/explosion.XM");
+	EffectSound = m_pSound->CreateSound("./Dependencies/SoundSamples/explosion.wav");
 	m_pSound->PlaySound(SoundBGM, true, 0.2f);
 
 }
@@ -118,8 +118,9 @@ void CSceneManager::ObjectUpdate(float _ElapsedTime)
 	if (m_frameX > m_frameMaxCountCharater2)
 		m_frameX = 0;
 
-	//if (m_fClimateFrameTime >= 3)
-	//	m_fClimateFrameTime = 0;
+	//비 프레임이 맥스프레임을넘어서면 다시 0번째 부터
+	if (m_fClimateFrameTime >= 3)
+		m_fClimateFrameTime = 0;
 
 
 
@@ -198,14 +199,13 @@ void CSceneManager::Render()
 			}
 			else if (i == OBJECT_CHARACTER_TEAM1)
 			{
-				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 				m_pRenderer->DrawTexturedRectSeq(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, m_CharaterTexture, m_frameX, m_frameY, m_frameMaxCountCharater1, 1, 0.2);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
-				//m_pRenderer->DrawTextW(Info.x -20, Info.y + 30, GLUT_BITMAP_TIMES_ROMAN_10, 255, 0, 255, "Charater1");
+
 			}
 			else if (i == OBJECT_CHARACTER_TEAM2)
 			{
-				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+
 				m_pRenderer->DrawTexturedRectSeq(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, m_Charater1Texture, m_frameX, m_frameY, m_frameMaxCountCharater2, 1, 0.2);
 				m_pRenderer->DrawSolidRectGauge(Info.x, Info.y + 20, Info.z, 20, 6, Info.r, Info.g, Info.b, Info.a, (*iter)->GetLife() / (*iter)->GetMaxLife(), 0.2);
 
@@ -213,25 +213,22 @@ void CSceneManager::Render()
 			else if (i == OBJECT_ARROW_TEAM1)
 			{
 
-				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
+				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 0.75, 0.2, 0.5 , m_Particle, m_fBulletFrameTime, 0.31);
 				
 			}
 			else if (i == OBJECT_ARROW_TEAM2)
 			{
-				float fRadianAngle = float(rand() % 360) / 180 * 3.141592;
 
-				//m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
-				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 0.75, 0.2, -1, m_Particle, m_fBulletFrameTime, 0.31);
+				m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 0.75, 0.2, -0.5, m_Particle, m_fBulletFrameTime, 0.31);
 				
 			}
 			else if (i == OBJECT_BULLET_TEAM1)
 			{
-				//m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, 1, m_Particle, m_fFrameTime);
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 			}
 			else if (i == OBJECT_BULLET_TEAM2)
 			{
-				//m_pRenderer->DrawParticle(Info.x, Info.y, Info.z, Info.size, 255, 255, 255, 255, 1, -1, m_Particle, m_fFrameTime, 0.31 );
+
 				m_pRenderer->DrawSolidRect(Info.x, Info.y, Info.z, Info.size, Info.r, Info.g, Info.b, Info.a, 0.3);
 			}
 
@@ -312,6 +309,7 @@ void CSceneManager::BulletColl(OBJECT_TYPE _BulletType, OBJECT_TYPE _TargetType)
 
 				if ((*iterTarget)->GetLife() <= 0)
 				{
+					m_pSound->PlaySound(EffectSound, false, 0.1f);
 					(*iterTarget)->SetDeadCheck();
 				}
 
@@ -352,12 +350,13 @@ void CSceneManager::BulidingMonsterColl(OBJECT_TYPE _BulidingType, OBJECT_TYPE _
 					}
 					else if ((*iterMonster)->GetLife() <= 0)
 					{
-
+						m_pSound->PlaySound(EffectSound, false, 0.1f);
 						(*iterMonster)->SetDeadCheck();
+
 					}
 
 				}
-
+			
 			}
 
 		}
@@ -384,4 +383,45 @@ bool CSceneManager::CollsionCheck(float _x, float _y, float _xSize, float _ySize
 	if (bottomPlayer > topmonster) return false;
 
 	return true;
+}
+
+void CSceneManager::MonsterTeam1AI(float fTime)
+{
+	if (m_pGameObject[OBJECT_CHARACTER_TEAM1].empty())
+		return;
+
+	list<CGameObject*>::iterator iterMonsterTeam1 = m_pGameObject[OBJECT_CHARACTER_TEAM1].begin();
+	list<CGameObject*>::iterator iterMonsterTeam1End = m_pGameObject[OBJECT_CHARACTER_TEAM1].end();
+
+	list<CGameObject*>::iterator iterBulidingTeam2 = m_pGameObject[OBJECT_TEAM2].begin();
+	list<CGameObject*>::iterator iterBulidingTeam2End = m_pGameObject[OBJECT_TEAM2].end();
+
+	for (iterMonsterTeam1; iterMonsterTeam1 != iterMonsterTeam1End; ++iterMonsterTeam1)
+	{
+		for (iterBulidingTeam2; iterBulidingTeam2 != iterBulidingTeam2End; ++iterBulidingTeam2)
+		{
+
+			float fx = (*iterBulidingTeam2)->GetInfo().x - (*iterMonsterTeam1)->GetInfo().x;
+			float fy = (*iterBulidingTeam2)->GetInfo().y - (*iterMonsterTeam1)->GetInfo().y;
+			
+			float DirX = (*iterMonsterTeam1)->GetDirX();
+			float DirY = (*iterMonsterTeam1)->GetDirY();
+
+			float fDist = sqrtf(pow(fx, 2) + pow(fy, 2));
+			m_fAngle = acos(fx / fDist) * 180 / 3.14;
+
+			if ((*iterBulidingTeam2)->GetInfo().x  > (*iterMonsterTeam1)->GetInfo().x)
+			{
+				m_fAngle = 360 - m_fAngle;
+			}
+
+			float MonsterPosx = (*iterMonsterTeam1)->GetInfo().x;
+			float MonsterPosy = (*iterMonsterTeam1)->GetInfo().y;
+	
+			MonsterPosx += sinf(m_fAngle * 3.14 / 180)  * DirX * 3.f * fTime;
+			MonsterPosy += DirY * 3.f;
+	
+		}
+	}
+
 }
